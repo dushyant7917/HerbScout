@@ -8,12 +8,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.example.rishi.herbscout.Adapter.PlantListAdapter;
 import com.example.rishi.herbscout.Adapter.StringAdapter;
@@ -22,6 +24,10 @@ import com.example.rishi.herbscout.Models.PlantDetail;
 import com.example.rishi.herbscout.Models.URLS;
 import com.example.rishi.herbscout.R;
 import com.example.rishi.herbscout.VolleySingleton.AppController;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlantDetailActivity extends AppCompatActivity {
+public class PlantDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     RecyclerView rvProperties,rvPartsUsed,rvPlaces;
     List<Plant> propertiesList,partsUsedList,placesList;
@@ -39,13 +45,18 @@ public class PlantDetailActivity extends AppCompatActivity {
     String plantName;
     PlantDetail plantDetail;
     TextView tvPlantName;
-    private Context context;
+    ImageView ivPlant;
+    MapView mapView;
+    GoogleMap googleMap;
+    Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_detail);
         context=this;
+        ivPlant= (ImageView) findViewById(R.id.ivPlant);
         tvPlantName= (TextView) findViewById(R.id.tvPlantName);
         rvProperties= (RecyclerView) findViewById(R.id.rvProperties);
         rvPartsUsed= (RecyclerView) findViewById(R.id.rvPartsUsed);
@@ -67,6 +78,11 @@ public class PlantDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(PlantDetailActivity.this,MapActivity.class));
             }
         });
+
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.onCreate(null);
+        mapView.getMapAsync(this);
+
         getPlantName();
 
     }
@@ -89,6 +105,11 @@ public class PlantDetailActivity extends AppCompatActivity {
                                 JSONArray properties=herb_data.getJSONArray("properties");
                                 JSONArray places=herb_data.getJSONArray("places");
                                 plantDetail.name=herb_data.getString("botanical_name");
+                                String newname=plantDetail.name.toLowerCase().replace(' ','-');
+                                String url= URLS.BASE_URL+"PlantImages/"+newname+"/0.jpg";
+                                ImageLoader imageLoader= AppController.getInstance().getImageLoader();
+                                imageLoader.get(url,ImageLoader.getImageListener(ivPlant,R.mipmap.ic_launcher,R.drawable.arrow_34_48_blue));
+
                                 tvPlantName.setText(plantDetail.name);
                                 int i;
                                 plantDetail.recommendations=new ArrayList<>();
@@ -135,5 +156,13 @@ public class PlantDetailActivity extends AppCompatActivity {
             }
         });
         AppController.getInstance().addToRequestQueue(request);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap mMap) {
+        MapsInitializer.initialize(context);
+        this.googleMap = mMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mapView.onResume();
     }
 }

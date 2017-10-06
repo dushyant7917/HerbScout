@@ -1,52 +1,72 @@
 package com.example.rishi.herbscout.Activity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.rishi.herbscout.Dialog.LoginDialog;
 import com.example.rishi.herbscout.Models.Constants;
+import com.example.rishi.herbscout.Models.URLS;
 import com.example.rishi.herbscout.R;
+import com.example.rishi.herbscout.VolleySingleton.AppController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btClassification,btLogin,btLogout;
+    Button btClassification;
     ImageView ivSearch;
     EditText etSearch;
-    Toolbar toolbar;
+    private static final int READ_REQUEST_CODE = 42;
+    private Button btLogin,btLogout,btUpload,btChoose;
+    ImageView ivUpload;
+    Uri uri;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-
 
         btClassification= (Button) findViewById(R.id.btClassification);
         ivSearch= (ImageView) findViewById(R.id.ivSearch);
         etSearch= (EditText) findViewById(R.id.etSearch);
-        btLogin= (Button) findViewById(R.id.btLogin);
-        btLogout= (Button) findViewById(R.id.btLogout);
         btClassification.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         etSearch.setOnClickListener(this);
-        btLogin.setOnClickListener(this);
-        btLogout.setOnClickListener(this);
+        btUpload= (Button) findViewById(R.id.btUpload);
+        btChoose= (Button) findViewById(R.id.btChoose);
+        ivUpload= (ImageView) findViewById(R.id.ivUpload);
+        btUpload.setOnClickListener(this);
+        btChoose.setOnClickListener(this);
 
-        if(isLogin()){
-            showLogoutLayout();
-        }else{
-            showLoginLayout();
-        }
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setTitle("Uploading");
+        progressDialog.setIndeterminate(false);
 
     }
 
@@ -69,6 +89,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btLogout:
                 doLogout();
+                break;
+            case R.id.btUpload:
+                doUpload();
+                break;
+            case R.id.btChoose:
+                performFileSearch();
                 break;
 
         }
@@ -102,18 +128,77 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btLogout.setVisibility(View.GONE);
     }
 
-    private void showLogoutLayout() {
-        btLogout.setVisibility(View.VISIBLE);
-
-        btLogin.setVisibility(View.GONE);
+    private void doUpload() {
+        ivUpload.buildDrawingCache();
+        Bitmap bitmap = ivUpload.getDrawingCache();
+        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+        byte[] image=stream.toByteArray();
+        //final String base64 = Base64.encodeToString(image, 0);
+        final String base64= Base64.encodeToString(image, Base64.URL_SAFE | Base64.NO_WRAP);
+        //encodedfile = new String(Base64.encodeBase64(bytes), "UTF-8");
+        StringRequest request=new StringRequest(Request.Method.POST, URLS.BASE_URL + URLS.searchImageURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("IMAGE",response);
+                        try {
+                            JSONObject jsonObject=new JSONObject(response);
+                            if(jsonObject.getString("success").contentEquals("true")){
+                                Log.d("DATA",jsonObject.getJSONObject("data").toString());
+                                String name=jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("herb_data").getString("botanical_name");
+                                Intent intent=new Intent(HomeActivity.this, PlantDetailActivity.class);
+                                intent.putExtra("plantName",name);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("IMAGE error",""+error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map=new HashMap<>();
+                map.put("base64Content",base64);
+                return map;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(40000,0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addToRequestQueue(request);
     }
 
-    public boolean isLogin() {
-        SharedPreferences prefs=getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
-        if(prefs.getString(Constants.PREFS_NAME_TOKEN,Constants.NULL).contentEquals("NULL")){
-            return false;
+    public void performFileSearch() {
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                showImage(uri);
+            }
         }
-        return true;
     }
+
+    private void showImage(Uri uri) {
+        Toast.makeText(this, "fileUri: "+uri.toString(), Toast.LENGTH_SHORT).show();
+        this.uri=uri;
+        ivUpload.setImageURI(uri);
+    }
+
 
 }
