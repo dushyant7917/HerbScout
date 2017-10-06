@@ -1,7 +1,9 @@
 <template>
     <v-flex xs12 sm6 md4 lg3 xl3>
         <v-container @click.stop="getSpecificPlant(name)">
-            <v-card raised hover class="text-xs-center" height="70px">
+            <v-card raised hover class="text-xs-center">
+                <v-card-media src="/static/TestImage.jpg" height="200px" class="black--text image-zoom">
+                </v-card-media>
                 <v-card-text>
                     <div class="title center-vertical">
                         {{ name }}

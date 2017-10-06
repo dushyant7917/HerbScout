@@ -49,59 +49,59 @@ router.get('/plant_info', (req, res) => {
     res.json({
         success: true,
         data: {
-            "results": [{
-                    "botanical_name": "aristolochia-bracteata"
+            'results': [{
+                    'botanical_name': 'aristolochia-bracteata'
                 },
                 {
-                    "botanical_name": "artanema-longifolia"
+                    'botanical_name': 'artanema-longifolia'
                 },
                 {
-                    "botanical_name": "balsamodendron-mukul"
+                    'botanical_name': 'balsamodendron-mukul'
                 },
                 {
-                    "botanical_name": "berberis-asiatica"
+                    'botanical_name': 'berberis-asiatica'
                 },
                 {
-                    "botanical_name": "aloe-indica"
+                    'botanical_name': 'aloe-indica'
                 },
                 {
-                    "botanical_name": "abies-webbiana"
+                    'botanical_name': 'abies-webbiana'
                 },
                 {
-                    "botanical_name": "enicostemma-hyssopifolium"
+                    'botanical_name': 'enicostemma-hyssopifolium'
                 },
                 {
-                    "botanical_name": "garcinia-morella"
+                    'botanical_name': 'garcinia-morella'
                 },
                 {
-                    "botanical_name": "gloriosa-superba"
+                    'botanical_name': 'gloriosa-superba'
                 },
                 {
-                    "botanical_name": "habenaria-edgeworthii"
+                    'botanical_name': 'habenaria-edgeworthii'
                 },
                 {
-                    "botanical_name": "kirganelia-reticulata"
+                    'botanical_name': 'kirganelia-reticulata'
                 },
                 {
-                    "botanical_name": "piper-wallichii"
+                    'botanical_name': 'piper-wallichii'
                 },
                 {
-                    "botanical_name": "peganum-harmala"
+                    'botanical_name': 'peganum-harmala'
                 },
                 {
-                    "botanical_name": "rhabdia-lycioides"
+                    'botanical_name': 'rhabdia-lycioides'
                 },
                 {
-                    "botanical_name": "rotula-aquatica"
+                    'botanical_name': 'rotula-aquatica'
                 },
                 {
-                    "botanical_name": "xyris-indica"
+                    'botanical_name': 'xyris-indica'
                 },
                 {
-                    "botanical_name": "barleria-longifolia"
+                    'botanical_name': 'barleria-longifolia'
                 },
                 {
-                    "botanical_name": "acacia-concinna"
+                    'botanical_name': 'acacia-concinna'
                 }
             ]
         }
@@ -154,53 +154,53 @@ router.get('/get_specific_plant', (req, res) => {
     return res.json({
         success: true,
         data: {
-            "found": true,
-            "recommendations": [{
-                    "botanical_name": "terminalia-paniculata"
+            'found': true,
+            'recommendations': [{
+                    'botanical_name': 'terminalia-paniculata'
                 },
                 {
-                    "botanical_name": "terminalia-arjuna"
+                    'botanical_name': 'terminalia-arjuna'
                 },
                 {
-                    "botanical_name": "pueraria-tuberosa"
+                    'botanical_name': 'pueraria-tuberosa'
                 },
                 {
-                    "botanical_name": "cleome-viscosa"
+                    'botanical_name': 'cleome-viscosa'
                 },
                 {
-                    "botanical_name": "rheum-moorcroftianum"
+                    'botanical_name': 'rheum-moorcroftianum'
                 }
             ],
-            "map_info": [{
-                    "latitude": "14.7504291",
-                    "longitude": "78.57002559"
+            'map_info': [{
+                    'latitude': '14.7504291',
+                    'longitude': '78.57002559'
                 },
                 {
-                    "latitude": "27.10039878",
-                    "longitude": "93.61660071"
+                    'latitude': '27.10039878',
+                    'longitude': '93.61660071'
                 },
                 {
-                    "latitude": "26.7499809",
-                    "longitude": "94.21666744"
+                    'latitude': '26.7499809',
+                    'longitude': '94.21666744'
                 }
             ],
-            "herb_data": {
-                "parts_used": [
-                    "Bark"
+            'herb_data': {
+                'parts_used': [
+                    'Bark'
                 ],
-                "properties": [
-                    "Balance disorder",
-                    "Bleeding disorders",
-                    "Bipolar disorders",
-                    "Bob disorders",
-                    "Body dysmorphic disorder"
+                'properties': [
+                    'Balance disorder',
+                    'Bleeding disorders',
+                    'Bipolar disorders',
+                    'Bob disorders',
+                    'Body dysmorphic disorder'
                 ],
-                "places": [
-                    "Andhra Pradesh",
-                    "Arunachal Pradesh",
-                    "Assam"
+                'places': [
+                    'Andhra Pradesh',
+                    'Arunachal Pradesh',
+                    'Assam'
                 ],
-                "botanical_name": "Azadirachta indica"
+                'botanical_name': 'Azadirachta indica'
             }
         }
     });
@@ -257,55 +257,55 @@ router.post('/plant_image', (req, res) => {
     res.json({
         success: true,
         data: {
-            "identified": true,
-            "result": {
-                "found": true,
-                "recommendations": [{
-                        "botanical_name": "terminalia-paniculata"
+            'identified': true,
+            'result': {
+                'found': true,
+                'recommendations': [{
+                        'botanical_name': 'terminalia-paniculata'
                     },
                     {
-                        "botanical_name": "terminalia-arjuna"
+                        'botanical_name': 'terminalia-arjuna'
                     },
                     {
-                        "botanical_name": "pueraria-tuberosa"
+                        'botanical_name': 'pueraria-tuberosa'
                     },
                     {
-                        "botanical_name": "cleome-viscosa"
+                        'botanical_name': 'cleome-viscosa'
                     },
                     {
-                        "botanical_name": "rheum-moorcroftianum"
+                        'botanical_name': 'rheum-moorcroftianum'
                     }
                 ],
-                "map_info": [{
-                        "latitude": "14.7504291",
-                        "longitude": "78.57002559"
+                'map_info': [{
+                        'latitude': '14.7504291',
+                        'longitude': '78.57002559'
                     },
                     {
-                        "latitude": "27.10039878",
-                        "longitude": "93.61660071"
+                        'latitude': '27.10039878',
+                        'longitude': '93.61660071'
                     },
                     {
-                        "latitude": "26.7499809",
-                        "longitude": "94.21666744"
+                        'latitude': '26.7499809',
+                        'longitude': '94.21666744'
                     }
                 ],
-                "herb_data": {
-                    "parts_used": [
-                        "Bark"
+                'herb_data': {
+                    'parts_used': [
+                        'Bark'
                     ],
-                    "properties": [
-                        "Balance disorder",
-                        "Bleeding disorders",
-                        "Bipolar disorders",
-                        "Bob disorders",
-                        "Body dysmorphic disorder"
+                    'properties': [
+                        'Balance disorder',
+                        'Bleeding disorders',
+                        'Bipolar disorders',
+                        'Bob disorders',
+                        'Body dysmorphic disorder'
                     ],
-                    "places": [
-                        "Andhra Pradesh",
-                        "Arunachal Pradesh",
-                        "Assam"
+                    'places': [
+                        'Andhra Pradesh',
+                        'Arunachal Pradesh',
+                        'Assam'
                     ],
-                    "botanical_name": "Azadirachta indica"
+                    'botanical_name': 'Azadirachta indica'
                 }
             }
         }
