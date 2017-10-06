@@ -18,6 +18,21 @@
 
         <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
 
+        <v-container v-if="results.length === 0 && !loading">
+            <v-card raised>
+                <v-card-text>
+                    <v-layout row wrap>
+                        <v-flex xs12 style="padding: 7px 0">
+                            <v-icon class="red--text">info</v-icon>
+                        </v-flex>
+                        <v-flex xs12>
+                            <span class="title">No Results Found. Search for Something Else</span>
+                        </v-flex>
+                    </v-layout>
+                </v-card-text>
+            </v-card>
+        </v-container>
+
     </v-container>
 </template>
 

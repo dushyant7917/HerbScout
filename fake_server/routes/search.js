@@ -78,7 +78,7 @@ router.get('/get_specific_plant', (req, res) => {
             // console.log(typeof body);
             // console.log(body['found']);
             body = JSON.parse(body);
-            if (!body.found) {
+            if (!body.found || !body.identified) {
                 return res.json({
                     success: false,
                     message: 'Unable to find something with that name'
@@ -100,7 +100,7 @@ router.get('/get_specific_plant', (req, res) => {
 
 router.post('/plant_image', (req, res) => {
     var imageFile = req.body.base64Content;
-    console.log(req.body);
+    // console.log(req.body);
     // imageFile = imageFile.split('\n').join('');;
 
     if (!imageFile)
@@ -127,8 +127,10 @@ router.post('/plant_image', (req, res) => {
         }
 
         if (response.statusCode >= 200 && response.statusCode < 400) {
+            // body = JSON.parse(body);
+            console.log(typeof body);
             console.log(body);
-            if (!body.identified) {
+            if (!body.identified || !body.found) {
                 return res.json({
                     success: false,
                     message: 'Unable to identify the plant'
