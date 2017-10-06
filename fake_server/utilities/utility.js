@@ -44,7 +44,7 @@ const usernameRegex = /^[a-zA-Z0-9 ]{5,50}$/;
 const fileTypeRegex = /^(\.jpg|\.jpeg|\.png)$/;
 const passwordRegex = /^[a-zA-Z0-9 :;\/\-+*_\.]{8,50}$/;
 const queryRegex = /^[a-zA-Z0-9 ]{3,100}$/;
-const BASE_URL = 'http://10.5.59.165';
+const BASE_URL = 'http://localhost:8000';
 const specificPlantName = /^[a-z]+\-[a-z]+$/;
 
 module.exports = {

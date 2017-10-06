@@ -82,6 +82,8 @@
                         if (data.error === undefined) {
                             if (data.success) {
                                 this.results = data.results;
+                                if (data.results.length === 0)
+                                    this.$emit('displayMessage', 'error', 'No results found');
                             } else {
                                 this.$emit('displayMessage', 'error', data.message);
                             }
