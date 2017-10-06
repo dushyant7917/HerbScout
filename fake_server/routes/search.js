@@ -75,8 +75,9 @@ router.get('/get_specific_plant', (req, res) => {
         }
 
         if (response.statusCode >= 200 && response.statusCode < 400) {
-            console.log(body);
-            console.log(body['found']);
+            // console.log(typeof body);
+            // console.log(body['found']);
+            body = JSON.parse(body);
             if (!body.found) {
                 return res.json({
                     success: false,
@@ -99,6 +100,8 @@ router.get('/get_specific_plant', (req, res) => {
 
 router.post('/plant_image', (req, res) => {
     var imageFile = req.body.base64Content;
+    // console.log(req.body);
+    // imageFile = imageFile.split('\n').join('');;
 
     if (!imageFile)
         return res.json({
