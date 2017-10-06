@@ -7,7 +7,7 @@
             <v-card style="max-width: 800px;">
                 <v-card-text style="height: 200px;">
                     <!-- <img src="/static/logo.png" alt="Image" style="height: 100%;" class="image-zoom"> -->
-                    <div class="background-main-image image-zoom"></div>
+                    <div class="background-main-image image-zoom-helper"></div>
                 </v-card-text>
                 <v-card-title>
                     <v-container>

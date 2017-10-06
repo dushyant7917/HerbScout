@@ -20,12 +20,23 @@
     z-index: -1;
 }
 
-.image-zoom:hover,
-.image-zoom:focus {
+.image-zoom:hover .card__media__background,
+.image-zoom:focus .card__media__background {
+    transform: scale(1.2);
+    background-position: center;
+    background-size: cover;
+}
+
+.image-zoom .card__media__background {
+    transition: all 2s;
+}
+
+.image-zoom-helper,
+.image-zoom-helper:focus {
     transform: scale(1.2);
 }
 
-.image-zoom {
+.image-zoom-helper {
     transition: all 2s;
 }
 

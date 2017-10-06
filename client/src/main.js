@@ -26,6 +26,11 @@ Vue.filter('formatName', (value) => {
         return element.charAt(0).toUpperCase() + element.slice(1);
     }).join(' ');
 });
+Vue.filter('capitalizeName', (value) => {
+    return value.split(' ').map(element => {
+        return element.charAt(0).toUpperCase() + element.slice(1);
+    }).join(' ');
+});
 
 router.beforeEach((to, from, next) => {
     if (window.localStorage.getItem('user') != null && store.state.user === null)

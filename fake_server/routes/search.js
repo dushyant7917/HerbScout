@@ -100,7 +100,7 @@ router.get('/get_specific_plant', (req, res) => {
 
 router.post('/plant_image', (req, res) => {
     var imageFile = req.body.base64Content;
-    // console.log(req.body);
+    console.log(req.body);
     // imageFile = imageFile.split('\n').join('');;
 
     if (!imageFile)

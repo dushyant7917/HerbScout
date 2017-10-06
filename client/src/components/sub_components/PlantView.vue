@@ -11,7 +11,7 @@
                 <v-card-title>
                     <v-container v-if="item.herb_data !== undefined">
                         <div class="display-1 text-xs-center">
-                            {{ item.herb_data.botanical_name }}
+                            {{ item.herb_data.botanical_name | capitalizeName }}
                         </div>
                         <div class="center-image">
                             <img :src="hyphenateImage(item.herb_data.botanical_name)" :alt="item.title" class="image-view" />
