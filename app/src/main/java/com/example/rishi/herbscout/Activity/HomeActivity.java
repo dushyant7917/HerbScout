@@ -51,18 +51,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void showLoginLayout() {
-        btLogin.setVisibility(View.VISIBLE);
-
-        btLogout.setVisibility(View.GONE);
-    }
-
-    private void showLogoutLayout() {
-        btLogout.setVisibility(View.VISIBLE);
-
-        btLogin.setVisibility(View.GONE);
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -87,6 +75,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private boolean validateForm() {
+        if(etSearch.getText().toString().trim().length()==0){
+            etSearch.setError("Please enter some text!");
+            return false;
+        }
+        return true;
+    }
+
     private void doLogout() {
         SharedPreferences.Editor editor=getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE).edit();
         editor.putString(Constants.PREFS_NAME_TOKEN,Constants.NULL);
@@ -101,14 +97,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         loginDialog.show();
     }
 
-    private boolean validateForm() {
-        if(etSearch.getText().toString().trim().length()==0){
-            etSearch.setError("Please enter some text!");
-            return false;
-        }
-        return true;
+    private void showLoginLayout() {
+        btLogin.setVisibility(View.VISIBLE);
+
+        btLogout.setVisibility(View.GONE);
     }
-    
+
+    private void showLogoutLayout() {
+        btLogout.setVisibility(View.VISIBLE);
+
+        btLogin.setVisibility(View.GONE);
+    }
+
     public boolean isLogin() {
         SharedPreferences prefs=getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
         if(prefs.getString(Constants.PREFS_NAME_TOKEN,Constants.NULL).contentEquals("NULL")){
@@ -117,15 +117,4 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "pause", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
-    }
 }
