@@ -15,12 +15,12 @@
                 <v-layout row wrap align-center>
                     <v-flex xs12 sm6>
                         <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
-                            <v-icon>file_upload</v-icon>
                             <span>Upload Photo</span>
+                            <v-icon>file_upload</v-icon>
                         </v-btn>
                     </v-flex>
-                    <v-flex xs12 sm6 @click.stop="$refs.fileInput.click()">
-                        <v-text-field :disabled="true" :label="fileName">
+                    <v-flex xs12 sm6 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
+                        <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
                         </v-text-field>
                     </v-flex>
                 </v-layout>
@@ -35,6 +35,8 @@
             </v-flex>
         </v-layout>
 
+        <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
+
     </v-container>
 </template>
 
@@ -42,13 +44,16 @@
 <script>
     import {
         sendPlantImage,
-        searchPlantInfo
+        getSpecificPlant
     } from './../api/api';
 
     import {
         queryRegex,
-        fileExtensionRegex
+        fileExtensionRegex,
+        specificPlantNameRegex
     } from './../utitility';
+
+    import PlantView from './sub_components/PlantView';
 
     export default {
         data() {
@@ -59,6 +64,9 @@
                 imageBase64: '',
                 fileReader: new FileReader(),
 
+                plantInfo: {},
+                displayModal: false,
+
                 loading: false,
 
                 rules: {
@@ -67,6 +75,9 @@
                     }
                 }
             };
+        },
+        components: {
+            PlantView
         },
         mounted() {
             this.fileReader.addEventListener('load', this.convertToBase64);
@@ -99,7 +110,8 @@
                         .then(data => {
                             if (data.error === undefined) {
                                 if (data.success) {
-                                    console.log(data);
+                                    this.plantInfo = data.data.result;
+                                    this.displayModal = true;
                                     this.resetFields();
 
                                 } else {
@@ -122,12 +134,19 @@
 
                     this.loading = true;
 
-                    searchPlantInfo(this.plantName)
+                    this.$router.push({
+                        path: `/search/${this.plantName}`
+                    });
+                }
+            },
+            getSpecificPlant(name) {
+                if (specificPlantNameRegex.test(name)) {
+                    getSpecificPlant(name)
                         .then(data => {
                             if (data.error === undefined) {
                                 if (data.success) {
-                                    console.log(data);
-                                    this.resetFields();
+                                    this.plantInfo = data.data;
+                                    this.displayModal = true;
                                 } else {
                                     this.$emit('displayMessage', 'error', data.message);
                                 }
@@ -137,7 +156,17 @@
 
                             this.loading = false;
                         });
+                } else {
+                    this.$emit('displayMessage', 'error',
+                        'We are sorry this a problem on over end. We\'ll resolve it shortly');
                 }
+            },
+            getPlantInfo(name) {
+                this.getSpecificPlant(name);
+            },
+            closeModal() {
+                this.displayModal = false;
+                this.plantInfo = {};
             },
             resetFields() {
                 this.plantName = '';

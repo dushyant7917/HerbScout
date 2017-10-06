@@ -23,9 +23,10 @@ export default new Router({
             component: Home
         },
         {
-            path: '/search',
+            path: '/search/:name',
             component: Search,
-            name: 'Search'
+            name: 'Search',
+            props: true
         },
         {
             path: '*',
