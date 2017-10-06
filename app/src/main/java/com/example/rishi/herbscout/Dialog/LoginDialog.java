@@ -3,22 +3,33 @@ package com.example.rishi.herbscout.Dialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.example.rishi.herbscout.Activity.HomeActivity;
+import com.example.rishi.herbscout.Models.Constants;
 import com.example.rishi.herbscout.Models.URLS;
 import com.example.rishi.herbscout.R;
+import com.example.rishi.herbscout.VolleySingleton.AppController;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Rishi on 06/10/17.
@@ -31,6 +42,7 @@ public class LoginDialog extends Dialog implements View.OnClickListener{
     EditText etUsername,etPassword;
     ProgressDialog progressDialog;
     Context context;
+    String username,password;
 
     public LoginDialog(@NonNull Context context) {
         super(context);
@@ -78,23 +90,82 @@ public class LoginDialog extends Dialog implements View.OnClickListener{
 
     void doLogin(){
         progressDialog.setMessage("Logging you in . . .");
-
-        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, URLS.BASE_URL + URLS.loginURL, null,
-                new Response.Listener<JSONObject>() {
+        username=etUsername.getText().toString();
+        password=etPassword.getText().toString();
+        progressDialog.show();
+        StringRequest request=new StringRequest(Request.Method.POST, URLS.BASE_URL + URLS.loginURL,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
+                        progressDialog.hide();
+                        Log.d("LOGIN",response.toString());
+                        try {
+                            JSONObject json=new JSONObject(response);
+                            String token=json.getString("token");
+                            saveCredentials(token,username);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        dismiss();
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("LOGIN",""+error.getMessage());
+                progressDialog.hide();
             }
-        });
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("username", username);
+                map.put("password", password);
+                return map;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    void saveCredentials(String token, String username){
+        SharedPreferences.Editor editor=context.getSharedPreferences(Constants.PREFS_NAME,Context.MODE_PRIVATE).edit();
+        editor.putString(Constants.PREFS_NAME_TOKEN,token);
+        editor.putString(Constants.PREFS_NAME_USERNAME,username);
+        editor.commit();
     }
 
     void doRegister(){
         progressDialog.setMessage("Registering you . . .");
+        username=etUsername.getText().toString();
+        password=etPassword.getText().toString();
+        progressDialog.show();
+        StringRequest request=new StringRequest(Request.Method.POST, URLS.BASE_URL + URLS.registerURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.hide();
+                        Log.d("REGISTER",response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.hide();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("username", username);
+                map.put("password", password);
+                return map;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(request);
     }
 
     boolean validateForm(){
@@ -122,8 +193,14 @@ public class LoginDialog extends Dialog implements View.OnClickListener{
                 dismiss();
                 break;
             case R.id.btLogin:
+                if(validateForm()){
+                    doLogin();
+                }
                 break;
             case R.id.btRegister:
+                if(validateForm()){
+                    doRegister();
+                }
                 break;
         }
     }

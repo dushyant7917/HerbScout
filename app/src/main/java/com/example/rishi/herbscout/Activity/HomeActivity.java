@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.rishi.herbscout.Dialog.LoginDialog;
 import com.example.rishi.herbscout.Models.Constants;
@@ -89,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void doLogout() {
         SharedPreferences.Editor editor=getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE).edit();
         editor.putString(Constants.PREFS_NAME_TOKEN,Constants.NULL);
-
+        editor.commit();
         showLoginLayout();
 
     }
@@ -107,13 +108,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         return true;
     }
-
-
+    
     public boolean isLogin() {
         SharedPreferences prefs=getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
         if(prefs.getString(Constants.PREFS_NAME_TOKEN,Constants.NULL).contentEquals("NULL")){
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "pause", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
     }
 }
