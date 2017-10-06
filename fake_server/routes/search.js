@@ -78,7 +78,7 @@ router.get('/get_specific_plant', (req, res) => {
             // console.log(typeof body);
             // console.log(body['found']);
             body = JSON.parse(body);
-            if (!body.found || !body.identified) {
+            if (body.found === false || body.identified === false) {
                 return res.json({
                     success: false,
                     message: 'Unable to find something with that name'
@@ -130,7 +130,7 @@ router.post('/plant_image', (req, res) => {
             // body = JSON.parse(body);
             console.log(typeof body);
             console.log(body);
-            if (!body.identified || !body.found) {
+            if (body.identified === false || body.found === false) {
                 return res.json({
                     success: false,
                     message: 'Unable to identify the plant'

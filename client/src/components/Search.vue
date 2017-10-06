@@ -1,16 +1,18 @@
 <template>
     <v-container class="text-xs-center">
-        <v-layout row align-center wrap>
-            <v-flex xs11>
-                <v-text-field v-model="plantName" label="Enter a Name:" name="plantName" :rules="[rules.name]">
-                </v-text-field>
-            </v-flex>
-            <v-flex xs1>
-                <v-btn icon class="red--text" :loading="loading" :disabled="loading" @click.stop="searchPlantInfo">
-                    <v-icon>search</v-icon>
-                </v-btn>
-            </v-flex>
-        </v-layout>
+        <form @submit.prevent="searchPlantInfo">
+            <v-layout row align-center wrap>
+                <v-flex xs11>
+                    <v-text-field v-model="plantName" label="Enter a Name:" name="plantName" :rules="[rules.name]">
+                    </v-text-field>
+                </v-flex>
+                <v-flex xs1>
+                    <v-btn icon class="red--text" :loading="loading" :disabled="loading" @click.stop="searchPlantInfo">
+                        <v-icon>search</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+        </form>
 
         <v-layout row wrap>
             <PlantCard v-for="result in results" :image="result.image" :name="result.botanical_name" :key="result.botanical_name" :getSpecificPlant="getSpecificPlant"></PlantCard>
@@ -18,20 +20,22 @@
 
         <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
 
-        <v-container v-if="results.length === 0 && !loading">
-            <v-card raised>
-                <v-card-text>
-                    <v-layout row wrap>
-                        <v-flex xs12 style="padding: 7px 0">
-                            <v-icon class="red--text">info</v-icon>
-                        </v-flex>
-                        <v-flex xs12>
-                            <span class="title">No Results Found. Search for Something Else</span>
-                        </v-flex>
-                    </v-layout>
-                </v-card-text>
-            </v-card>
-        </v-container>
+        <transition name="fade-transition">
+            <v-container v-if="results.length === 0 && !loading">
+                <v-card raised>
+                    <v-card-text>
+                        <v-layout row wrap>
+                            <v-flex xs12 style="padding: 7px 0">
+                                <v-icon class="red--text">info</v-icon>
+                            </v-flex>
+                            <v-flex xs12>
+                                <span class="title">No Results Found for '{{ name }}'.Please Search for Something Else</span>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-container>
+        </transition>
 
     </v-container>
 </template>
