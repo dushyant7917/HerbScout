@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -130,13 +133,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void doUpload() {
         ivUpload.buildDrawingCache();
-        Bitmap bitmap = ivUpload.getDrawingCache();
+        Log.d("PATH:",getPath(uri));
+        Bitmap bitmap = BitmapFactory.decodeFile(getPath(uri));
         ByteArrayOutputStream stream=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image=stream.toByteArray();
-        //final String base64 = Base64.encodeToString(image, 0);
-        final String base64= Base64.encodeToString(image, Base64.URL_SAFE | Base64.NO_WRAP);
-        //encodedfile = new String(Base64.encodeBase64(bytes), "UTF-8");
+        final String base64= Base64.encodeToString(image, Base64.DEFAULT);
         StringRequest request=new StringRequest(Request.Method.POST, URLS.BASE_URL + URLS.searchImageURL,
                 new Response.Listener<String>() {
                     @Override
@@ -198,6 +200,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "fileUri: "+uri.toString(), Toast.LENGTH_SHORT).show();
         this.uri=uri;
         ivUpload.setImageURI(uri);
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 
 
