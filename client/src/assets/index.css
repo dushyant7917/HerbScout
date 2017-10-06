@@ -1,0 +1,50 @@
+.main-submit-button {
+    display: inline-block;
+    padding: 7px;
+}
+
+.extra-margin-bottom {
+    margin-bottom: 28px;
+}
+
+.extra-margin {
+    padding: 14px 0
+}
+
+.input-file {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.image-zoom:hover .card__media__background,
+.image-zoom:focus .card__media__background {
+    transform: scale(1.2);
+}
+
+.image-zoom .card__media__background {
+    transition: all 2s;
+}
+
+.default-text-shadow {
+    text-shadow: 2px 2px 5px #000;
+}
+
+.headline-text-shadow {
+    text-shadow: 2px 2px 5px #BDBCBC;
+    font-weight: 500;
+}
+
+.prompt-main-text {
+    float: left;
+    padding-top: 14px;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+
+.prompt-main-text:hover {
+    color: #008000;
+}
