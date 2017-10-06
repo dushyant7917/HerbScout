@@ -3,7 +3,7 @@
     package="com.example.rishi.herbscout">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".VolleySingleton.AppController"
@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".Activity.HomeActivity" />
         <activity android:name=".Activity.ClassificationActivity" />
-        <activity android:name=".Activity.SearchActivity"></activity>
+        <activity android:name=".Activity.SearchActivity" />
+        <activity android:name=".Activity.PlantDetailActivity"></activity>
     </application>
 
 </manifest>

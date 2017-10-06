@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             showLoginLayout();
         }
 
-
     }
 
     @Override
@@ -61,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if(validateForm()){
                     String textSearch=etSearch.getText().toString();
                     Intent intent=new Intent(HomeActivity.this,SearchActivity.class);
-                    intent.putExtra("textSearch",textSearch);
+                    intent.putExtra("searchQuery",textSearch);
                     startActivity(intent);
                 }
                 break;

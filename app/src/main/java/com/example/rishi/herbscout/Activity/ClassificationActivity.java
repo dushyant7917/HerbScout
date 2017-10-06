@@ -22,9 +22,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.rishi.herbscout.Dialog.LoginDialog;
 import com.example.rishi.herbscout.Models.Constants;
+import com.example.rishi.herbscout.Models.PlantDetail;
 import com.example.rishi.herbscout.Models.URLS;
 import com.example.rishi.herbscout.R;
 import com.example.rishi.herbscout.VolleySingleton.AppController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -128,6 +132,18 @@ public class ClassificationActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onResponse(String response) {
                         Log.d("IMAGE",response);
+                        try {
+                            JSONObject jsonObject=new JSONObject(response);
+                            if(jsonObject.getString("success").contentEquals("true")){
+                                Log.d("DATA",jsonObject.getJSONObject("data").toString());
+                                String name=jsonObject.getJSONObject("data").getJSONObject("herb_data").getString("botanical_name");
+                                Intent intent=new Intent(ClassificationActivity.this, PlantDetailActivity.class);
+                                intent.putExtra("plantName",name);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
