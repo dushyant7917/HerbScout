@@ -9,7 +9,7 @@
                     </v-btn>
                 </v-card-actions>
                 <v-card-title>
-                    <v-container v-if="item.title !== undefined">
+                    <v-container v-if="item.askljdjfb !== undefined">
                         <div class="display-1">
                             {{ item.title | decodeHTML}}
                         </div>
