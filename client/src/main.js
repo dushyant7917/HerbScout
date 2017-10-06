@@ -21,6 +21,12 @@ Vue.use(VueGoogleMaps, {
     }
 });
 
+Vue.filter('formatName', (value) => {
+    return value.split('-').map(element => {
+        return element.charAt(0).toUpperCase() + element.slice(1);
+    }).join(' ');
+});
+
 router.beforeEach((to, from, next) => {
     if (window.localStorage.getItem('user') != null && store.state.user === null)
         store.commit('setUser', JSON.parse(window.localStorage.getItem('user')));

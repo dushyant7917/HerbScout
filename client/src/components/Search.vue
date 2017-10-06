@@ -13,7 +13,7 @@
         </v-layout>
 
         <v-layout row wrap>
-            <PlantCard v-for="result in results" :name="result.botanical_name" :key="result.botanical_name" :getSpecificPlant="getSpecificPlant"></PlantCard>
+            <PlantCard v-for="result in results" :image="result.image" :name="result.botanical_name" :key="result.botanical_name" :getSpecificPlant="getSpecificPlant"></PlantCard>
         </v-layout>
 
         <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
@@ -76,7 +76,7 @@
                     .then(data => {
                         if (data.error === undefined) {
                             if (data.success) {
-                                this.results = data.data.results;
+                                this.results = data.results;
                             } else {
                                 this.$emit('displayMessage', 'error', data.message);
                             }
