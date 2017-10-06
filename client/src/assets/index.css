@@ -82,3 +82,9 @@
     align-items: center;
     width: 100%;
 }
+
+.background-main-image {
+    height: 100%;
+    background: url('/static/logo.png');
+    background-repeat: no-repeat;
+}

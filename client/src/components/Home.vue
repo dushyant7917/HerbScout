@@ -3,37 +3,50 @@
 
         <input type="file" name="file" ref="fileInput" class="input-file" @change="handleFileChange" />
 
-        <v-layout row align-center wrap>
-            <v-flex xs12 sm12 md5 lg5>
-                <v-text-field v-model="plantName" label="Enter a Name:" name="plantName" :rules="[rules.name]">
-                </v-text-field>
-            </v-flex>
-            <v-flex xs12 sm12 md2 lg2>
-                <h3 class="grey--text">--OR--</h3>
-            </v-flex>
-            <v-flex xs12 sm12 md5 lg5>
-                <v-layout row wrap align-center>
-                    <v-flex xs12 sm6>
-                        <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
-                            <span>Upload Photo</span>
-                            <v-icon>file_upload</v-icon>
-                        </v-btn>
-                    </v-flex>
-                    <v-flex xs12 sm6 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
-                        <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
-                        </v-text-field>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
-        <v-layout row align-center>
-            <v-flex xs12>
-                <v-btn @click.stop="searchPlantData" class="green white--text" :loading="loading" :disabled="loading">
-                    <span class="main-submit-button">Submit</span>
-                    <v-icon>send</v-icon>
-                </v-btn>
-            </v-flex>
-        </v-layout>
+        <div class="justify-center align-center" style="display: flex">
+            <v-card style="max-width: 800px;">
+                <v-card-text style="height: 200px;">
+                    <!-- <img src="/static/logo.png" alt="Image" style="height: 100%;" class="image-zoom"> -->
+                    <div class="background-main-image image-zoom"></div>
+                </v-card-text>
+                <v-card-title>
+                    <v-container>
+                        <v-layout row align-center wrap>
+                            <v-flex xs12>
+                                <v-container style="max-width: 600px;">
+                                    <v-text-field v-model="plantName" label="Search Something. Will Ya..." name="plantName" :rules="[rules.name]">
+                                    </v-text-field>
+                                </v-container>
+                            </v-flex>
+                            <v-flex xs12>
+                                <v-container>
+                                    <v-layout row wrap align-center>
+                                        <v-flex xs12>
+                                            <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
+                                                <span>Upload </span>
+                                                <v-icon>file_upload</v-icon>
+                                            </v-btn>
+                                        </v-flex>
+                                        <v-flex xs12 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
+                                            <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
+                                            </v-text-field>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row align-center>
+                            <v-flex xs12>
+                                <v-btn @click.stop="searchPlantData" class="green white--text" :loading="loading" :disabled="loading">
+                                    <span class="main-submit-button">Submit</span>
+                                    <v-icon>send</v-icon>
+                                </v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card-title>
+            </v-card>
+        </div>
 
         <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
 
@@ -59,7 +72,7 @@
         data() {
             return {
                 plantName: '',
-                fileName: 'Filename will be displayed here...',
+                fileName: '',
                 imageFile: null,
                 imageBase64: '',
                 fileReader: new FileReader(),
@@ -172,7 +185,7 @@
                 this.plantName = '';
                 this.imageBase64 = '';
                 this.imageFile = null;
-                this.fileName = 'Filename will be displayed here...';
+                this.fileName = '';
             }
         }
     }

@@ -51,67 +51,6 @@ router.get('/plant_info', (req, res) => {
             });
         }
     });
-
-    // var results = [{
-    //         botanical_name: 'aristolochia-bracteata'
-    //     },
-    //     {
-    //         botanical_name: 'artanema-longifolia'
-    //     },
-    //     {
-    //         botanical_name: 'balsamodendron-mukul'
-    //     },
-    //     {
-    //         botanical_name: 'berberis-asiatica'
-    //     },
-    //     {
-    //         botanical_name: 'aloe-indica'
-    //     },
-    //     {
-    //         botanical_name: 'abies-webbiana'
-    //     },
-    //     {
-    //         botanical_name: 'enicostemma-hyssopifolium'
-    //     },
-    //     {
-    //         botanical_name: 'garcinia-morella'
-    //     },
-    //     {
-    //         botanical_name: 'gloriosa-superba'
-    //     },
-    //     {
-    //         botanical_name: 'habenaria-edgeworthii'
-    //     },
-    //     {
-    //         botanical_name: 'kirganelia-reticulata'
-    //     },
-    //     {
-    //         botanical_name: 'piper-wallichii'
-    //     },
-    //     {
-    //         botanical_name: 'peganum-harmala'
-    //     },
-    //     {
-    //         botanical_name: 'rhabdia-lycioides'
-    //     },
-    //     {
-    //         botanical_name: 'rotula-aquatica'
-    //     },
-    //     {
-    //         botanical_name: 'xyris-indica'
-    //     },
-    //     {
-    //         botanical_name: 'barleria-longifolia'
-    //     },
-    //     {
-    //         botanical_name: 'acacia-concinna'
-    //     }
-    // ];
-
-    // res.json({
-    //     success: true,
-    //     results: results
-    // });
 });
 
 router.get('/get_specific_plant', (req, res) => {
@@ -137,6 +76,7 @@ router.get('/get_specific_plant', (req, res) => {
 
         if (response.statusCode >= 200 && response.statusCode < 400) {
             console.log(body);
+            console.log(body['found']);
             if (!body.found) {
                 return res.json({
                     success: false,
@@ -155,62 +95,6 @@ router.get('/get_specific_plant', (req, res) => {
             });
         }
     });
-
-    // var data = {
-    //     'found': true,
-    //     'recommendations': [{
-    //             botanical_name: 'terminalia-paniculata'
-    //         },
-    //         {
-    //             botanical_name: 'terminalia-arjuna'
-    //         },
-    //         {
-    //             botanical_name: 'pueraria-tuberosa'
-    //         },
-    //         {
-    //             botanical_name: 'cleome-viscosa'
-    //         },
-    //         {
-    //             botanical_name: 'rheum-moorcroftianum'
-    //         }
-    //     ],
-    //     'map_info': [{
-    //             'latitude': '14.7504291',
-    //             'longitude': '78.57002559'
-    //         },
-    //         {
-    //             'latitude': '27.10039878',
-    //             'longitude': '93.61660071'
-    //         },
-    //         {
-    //             'latitude': '26.7499809',
-    //             'longitude': '94.21666744'
-    //         }
-    //     ],
-    //     'herb_data': {
-    //         'parts_used': [
-    //             'Bark'
-    //         ],
-    //         'properties': [
-    //             'Balance disorder',
-    //             'Bleeding disorders',
-    //             'Bipolar disorders',
-    //             'Bob disorders',
-    //             'Body dysmorphic disorder'
-    //         ],
-    //         'places': [
-    //             'Andhra Pradesh',
-    //             'Arunachal Pradesh',
-    //             'Assam'
-    //         ],
-    //         botanical_name: 'Azadirachta indica'
-    //     }
-    // };
-
-    // return res.json({
-    //     success: true,
-    //     data: data
-    // });
 });
 
 router.post('/plant_image', (req, res) => {
@@ -247,77 +131,20 @@ router.post('/plant_image', (req, res) => {
                     message: 'Unable to identify the plant'
                 });
             } else {
+                console.log('Proper Response');
                 return res.json({
                     success: true,
                     data: body
                 });
             }
         } else {
+            console.log('Error Occurred');
             return res.json({
                 success: false,
                 message: 'Something happened at our end. Sorry about that'
             });
         }
     });
-
-    // var data = {
-    //     'identified': true,
-    //     'result': {
-    //         'found': true,
-    //         'recommendations': [{
-    //                 botanical_name: 'terminalia-paniculata'
-    //             },
-    //             {
-    //                 botanical_name: 'terminalia-arjuna'
-    //             },
-    //             {
-    //                 botanical_name: 'pueraria-tuberosa'
-    //             },
-    //             {
-    //                 botanical_name: 'cleome-viscosa'
-    //             },
-    //             {
-    //                 botanical_name: 'rheum-moorcroftianum'
-    //             }
-    //         ],
-    //         'map_info': [{
-    //                 'latitude': '14.7504291',
-    //                 'longitude': '78.57002559'
-    //             },
-    //             {
-    //                 'latitude': '27.10039878',
-    //                 'longitude': '93.61660071'
-    //             },
-    //             {
-    //                 'latitude': '26.7499809',
-    //                 'longitude': '94.21666744'
-    //             }
-    //         ],
-    //         'herb_data': {
-    //             'parts_used': [
-    //                 'Bark'
-    //             ],
-    //             'properties': [
-    //                 'Balance disorder',
-    //                 'Bleeding disorders',
-    //                 'Bipolar disorders',
-    //                 'Bob disorders',
-    //                 'Body dysmorphic disorder'
-    //             ],
-    //             'places': [
-    //                 'Andhra Pradesh',
-    //                 'Arunachal Pradesh',
-    //                 'Assam'
-    //             ],
-    //             botanical_name: 'Azadirachta indica'
-    //         }
-    //     }
-    // };
-
-    // return res.json({
-    //     success: true,
-    //     data: data
-    // });
 });
 
 
