@@ -6,48 +6,53 @@
                 </v-text-field>
             </v-flex>
             <v-flex xs1>
-                <v-btn icon class="red--text">
+                <v-btn icon class="red--text" :loading="loading" :disabled="loading" @click.stop="searchPlantInfo">
                     <v-icon>search</v-icon>
                 </v-btn>
             </v-flex>
         </v-layout>
+
+        <v-layout row wrap>
+            <PlantCard v-for="result in results" :name="result.botanical_name" :key="result.botanical_name" :getSpecificPlant="getSpecificPlant"></PlantCard>
+        </v-layout>
+
     </v-container>
 </template>
 
 <script>
     import {
-        sendPlantImage,
-        searchPlantInfo
+        searchPlantInfo,
+        getSpecificPlant
     } from './../api/api';
 
     import {
-        nameRegex
+        queryRegex,
+        specificPlantNameRegex
     } from './../utitility';
 
+    import PlantCard from './sub_components/PlantCard';
+
     export default {
-        props: {
-            name: {
-                type: String
-            }
-        },
         data() {
             return {
                 plantName: '',
                 loading: false,
                 rules: {
                     name: (value) => {
-                        return nameRegex.test(value) || 'Invalid Characters in Data';
+                        return queryRegex.test(value) || 'Invalid Characters in Data';
                     }
-                }
+                },
+
+                results: [],
+                plantInfo: {}
             }
         },
-        mounted() {
-            console.log(this.name);
-            console.log(this);
+        components: {
+            PlantCard
         },
         methods: {
             searchPlantInfo() {
-                if (!nameRegex.test(this.plantName)) {
+                if (!queryRegex.test(this.plantName)) {
                     this.$emit('displayMessage', 'error', 'Invalid Characters in Plant Name');
                     return;
                 }
@@ -58,8 +63,7 @@
                     .then(data => {
                         if (data.error === undefined) {
                             if (data.success) {
-                                console.log(data);
-                                this.resetFields();
+                                this.results = data.data.results;
                             } else {
                                 this.$emit('displayMessage', 'error', data.message);
                             }
@@ -69,6 +73,27 @@
 
                         this.loading = false;
                     });
+            },
+            getSpecificPlant(name) {
+                if (specificPlantNameRegex.test(name)) {
+                    getSpecificPlant(name)
+                        .then(data => {
+                            if (data.error === undefined) {
+                                if (data.success) {
+                                    this.plantInfo = data.data;
+                                } else {
+                                    this.$emit('displayMessage', 'error', data.message);
+                                }
+                            } else {
+                                this.$emit('displayMessage', 'error', data.error);
+                            }
+
+                            this.loading = false;
+                        });
+                } else {
+                    this.$emit('displayMessage', 'error',
+                        'We are sorry this a problem on over end. We\'ll resolve it shortly');
+                }
             }
         }
     }

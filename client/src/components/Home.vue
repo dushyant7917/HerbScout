@@ -46,7 +46,7 @@
     } from './../api/api';
 
     import {
-        nameRegex,
+        queryRegex,
         fileExtensionRegex
     } from './../utitility';
 
@@ -63,7 +63,7 @@
 
                 rules: {
                     name: (value) => {
-                        return nameRegex.test(value) || 'Invalid Characters in Data';
+                        return queryRegex.test(value) || 'Invalid Characters in Data';
                     }
                 }
             };
@@ -115,7 +115,7 @@
                         });
 
                 } else {
-                    if (!nameRegex.test(this.plantName)) {
+                    if (!queryRegex.test(this.plantName)) {
                         this.$emit('displayMessage', 'error', 'Invalid Characters in Plant Name');
                         return;
                     }

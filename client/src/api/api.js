@@ -75,13 +75,20 @@ var searchPlantInfo = (searchText) => {
         });
 };
 
-var getRecommendation = () => {
-
+var getSpecificPlant = (plantName) => {
+    return axios.get(`${BASE_URL}/search/get_specific_plant?name=${plantName}`)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            return handleError(error, ERROR_MSG)
+        });
 };
 
 export {
     loginUser,
     registerUser,
     sendPlantImage,
-    searchPlantInfo
+    searchPlantInfo,
+    getSpecificPlant
 };

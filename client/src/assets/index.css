@@ -48,3 +48,16 @@
 .prompt-main-text:hover {
     color: #008000;
 }
+
+.center-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1 0;
+    height: 100%;
+}
+
+.card__text {
+    height: 100%;
+}
