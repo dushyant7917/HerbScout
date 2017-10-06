@@ -1,0 +1,11 @@
+Fruit
+Bark
+Flower
+Root
+Leafs
+Whole Plant
+Gum Rasine
+Stem
+Seed
+Tuber
+Oil
