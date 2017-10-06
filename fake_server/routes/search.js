@@ -162,58 +162,63 @@ router.get('/get_specific_plant', (req, res) => {
     //     }
     // });
 
+    var data = {
+        'found': true,
+        'recommendations': [{
+                botanical_name: 'terminalia-paniculata'
+            },
+            {
+                botanical_name: 'terminalia-arjuna'
+            },
+            {
+                botanical_name: 'pueraria-tuberosa'
+            },
+            {
+                botanical_name: 'cleome-viscosa'
+            },
+            {
+                botanical_name: 'rheum-moorcroftianum'
+            }
+        ],
+        'map_info': [{
+                'latitude': '14.7504291',
+                'longitude': '78.57002559'
+            },
+            {
+                'latitude': '27.10039878',
+                'longitude': '93.61660071'
+            },
+            {
+                'latitude': '26.7499809',
+                'longitude': '94.21666744'
+            }
+        ],
+        'herb_data': {
+            'parts_used': [
+                'Bark'
+            ],
+            'properties': [
+                'Balance disorder',
+                'Bleeding disorders',
+                'Bipolar disorders',
+                'Bob disorders',
+                'Body dysmorphic disorder'
+            ],
+            'places': [
+                'Andhra Pradesh',
+                'Arunachal Pradesh',
+                'Assam'
+            ],
+            botanical_name: 'Azadirachta indica'
+        }
+    };
+
+    data.herb_data.image = `http://localhost:3000/PlantImages/` +
+        `${utilities.hyphenateName(data.herb_data.botanical_name)}/0.jpg`;
+
     return res.json({
         success: true,
-        data: {
-            'found': true,
-            'recommendations': [{
-                    botanical_name: 'terminalia-paniculata'
-                },
-                {
-                    botanical_name: 'terminalia-arjuna'
-                },
-                {
-                    botanical_name: 'pueraria-tuberosa'
-                },
-                {
-                    botanical_name: 'cleome-viscosa'
-                },
-                {
-                    botanical_name: 'rheum-moorcroftianum'
-                }
-            ],
-            'map_info': [{
-                    'latitude': '14.7504291',
-                    'longitude': '78.57002559'
-                },
-                {
-                    'latitude': '27.10039878',
-                    'longitude': '93.61660071'
-                },
-                {
-                    'latitude': '26.7499809',
-                    'longitude': '94.21666744'
-                }
-            ],
-            'herb_data': {
-                'parts_used': [
-                    'Bark'
-                ],
-                'properties': [
-                    'Balance disorder',
-                    'Bleeding disorders',
-                    'Bipolar disorders',
-                    'Bob disorders',
-                    'Body dysmorphic disorder'
-                ],
-                'places': [
-                    'Andhra Pradesh',
-                    'Arunachal Pradesh',
-                    'Assam'
-                ],
-                botanical_name: 'Azadirachta indica'
-            }
-        }
+        data: data
     });
     //TODO: Do something with request
 });
@@ -265,61 +270,67 @@ router.post('/plant_image', (req, res) => {
     //     }
     // });
 
-    res.json({
-        success: true,
-        data: {
-            'identified': true,
-            'result': {
-                'found': true,
-                'recommendations': [{
-                        botanical_name: 'terminalia-paniculata'
-                    },
-                    {
-                        botanical_name: 'terminalia-arjuna'
-                    },
-                    {
-                        botanical_name: 'pueraria-tuberosa'
-                    },
-                    {
-                        botanical_name: 'cleome-viscosa'
-                    },
-                    {
-                        botanical_name: 'rheum-moorcroftianum'
-                    }
-                ],
-                'map_info': [{
-                        'latitude': '14.7504291',
-                        'longitude': '78.57002559'
-                    },
-                    {
-                        'latitude': '27.10039878',
-                        'longitude': '93.61660071'
-                    },
-                    {
-                        'latitude': '26.7499809',
-                        'longitude': '94.21666744'
-                    }
-                ],
-                'herb_data': {
-                    'parts_used': [
-                        'Bark'
-                    ],
-                    'properties': [
-                        'Balance disorder',
-                        'Bleeding disorders',
-                        'Bipolar disorders',
-                        'Bob disorders',
-                        'Body dysmorphic disorder'
-                    ],
-                    'places': [
-                        'Andhra Pradesh',
-                        'Arunachal Pradesh',
-                        'Assam'
-                    ],
-                    botanical_name: 'Azadirachta indica'
+    var data = {
+        'identified': true,
+        'result': {
+            'found': true,
+            'recommendations': [{
+                    botanical_name: 'terminalia-paniculata'
+                },
+                {
+                    botanical_name: 'terminalia-arjuna'
+                },
+                {
+                    botanical_name: 'pueraria-tuberosa'
+                },
+                {
+                    botanical_name: 'cleome-viscosa'
+                },
+                {
+                    botanical_name: 'rheum-moorcroftianum'
                 }
+            ],
+            'map_info': [{
+                    'latitude': '14.7504291',
+                    'longitude': '78.57002559'
+                },
+                {
+                    'latitude': '27.10039878',
+                    'longitude': '93.61660071'
+                },
+                {
+                    'latitude': '26.7499809',
+                    'longitude': '94.21666744'
+                }
+            ],
+            'herb_data': {
+                'parts_used': [
+                    'Bark'
+                ],
+                'properties': [
+                    'Balance disorder',
+                    'Bleeding disorders',
+                    'Bipolar disorders',
+                    'Bob disorders',
+                    'Body dysmorphic disorder'
+                ],
+                'places': [
+                    'Andhra Pradesh',
+                    'Arunachal Pradesh',
+                    'Assam'
+                ],
+                botanical_name: 'Azadirachta indica'
             }
         }
+    };
+
+    data.herb_data.image = 'http://localhost:3000/PlantImages/' +
+        utilities.hyphenateName(data.herb_data.botanical_name) + '/0.jpg';
+    console.log(data);
+
+    return res.json({
+        success: true,
+        data: data
     });
 });
 

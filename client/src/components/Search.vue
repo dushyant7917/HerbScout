@@ -64,6 +64,11 @@
             this.searchPlantInfo();
         },
         methods: {
+            hyphenatePlantName(name) {
+                return name.split(' ').map(element => {
+                    return element.charAt(0).toLowerCase() + element.slice(1);
+                }).join('-');
+            },
             searchPlantInfo() {
                 if (!queryRegex.test(this.plantName)) {
                     this.$emit('displayMessage', 'error', 'Invalid Characters in Plant Name');

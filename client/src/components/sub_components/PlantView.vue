@@ -14,7 +14,7 @@
                             {{ item.herb_data.botanical_name }}
                         </div>
                         <div class="center-image">
-                            <img src="/static/TestImage.jpg" :alt="item.title" class="image-view" />
+                            <img :src="item.herb_data.image" :alt="item.title" class="image-view" />
                         </div>
                     </v-container>
                 </v-card-title>
