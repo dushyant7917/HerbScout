@@ -14,7 +14,7 @@
                             {{ item.herb_data.botanical_name }}
                         </div>
                         <div class="center-image">
-                            <img :src="item.herb_data.image" :alt="item.title" class="image-view" />
+                            <img :src="hyphenateImage(item.herb_data.botanical_name)" :alt="item.title" class="image-view" />
                         </div>
                     </v-container>
                 </v-card-title>
@@ -106,6 +106,12 @@
             closeInfoModal() {
                 this.displayModal = false;
                 this.closeModal();
+            },
+            hyphenateImage(value) {
+                let hyphenatedValue = value.split(' ').map(element => {
+                    return element.charAt(0).toLowerCase() + element.slice(1);
+                }).join('-');
+                return `http://localhost:3000/PlantImages/${hyphenatedValue}/0.jpg`;
             }
         }
     }

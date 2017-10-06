@@ -39,12 +39,6 @@ function checkAuthentication(req, res, next) {
     }
 }
 
-function hyphenateName(value) {
-    return value.split(' ').map(element => {
-        return element.charAt(0).toLowerCase() + element.slice(1);
-    }).join('-');
-}
-
 
 const usernameRegex = /^[a-zA-Z0-9 ]{5,50}$/;
 const fileTypeRegex = /^(\.jpg|\.jpeg|\.png)$/;
@@ -62,6 +56,5 @@ module.exports = {
     passwordRegex: passwordRegex,
     queryRegex: queryRegex,
     BASE_URL: BASE_URL,
-    specificPlantName: specificPlantName,
-    hyphenateName: hyphenateName
+    specificPlantName: specificPlantName
 };

@@ -324,10 +324,6 @@ router.post('/plant_image', (req, res) => {
         }
     };
 
-    data.herb_data.image = 'http://localhost:3000/PlantImages/' +
-        utilities.hyphenateName(data.herb_data.botanical_name) + '/0.jpg';
-    console.log(data);
-
     return res.json({
         success: true,
         data: data
