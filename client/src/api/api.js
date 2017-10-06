@@ -66,7 +66,7 @@ var sendPlantImage = (fileBase64) => {
 var searchPlantInfo = (searchText) => {
     let encodedData = encodeURIComponent(searchText);
 
-    return axios.get(`${BASE_URL}/search/plant_name?name=${encodedData}`)
+    return axios.get(`${BASE_URL}/search/plant_info?query=${encodedData}`)
         .then(response => {
             return response.data;
         })
