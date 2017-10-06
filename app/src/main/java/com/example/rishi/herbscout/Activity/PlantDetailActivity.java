@@ -1,11 +1,14 @@
 package com.example.rishi.herbscout.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,6 +38,7 @@ public class PlantDetailActivity extends AppCompatActivity {
     LinearLayoutManager llm1,llm2,llm3;
     String plantName;
     PlantDetail plantDetail;
+    TextView tvPlantName;
     private Context context;
 
     @Override
@@ -42,6 +46,7 @@ public class PlantDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_detail);
         context=this;
+        tvPlantName= (TextView) findViewById(R.id.tvPlantName);
         rvProperties= (RecyclerView) findViewById(R.id.rvProperties);
         rvPartsUsed= (RecyclerView) findViewById(R.id.rvPartsUsed);
         rvPlaces= (RecyclerView) findViewById(R.id.rvPlaces);
@@ -56,6 +61,12 @@ public class PlantDetailActivity extends AppCompatActivity {
         plantName=plantName.replace(' ','-');
 //        plantName="Azadirachta indica";
         plantDetail=new PlantDetail();
+        tvPlantName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PlantDetailActivity.this,MapActivity.class));
+            }
+        });
         getPlantName();
 
     }
@@ -78,6 +89,7 @@ public class PlantDetailActivity extends AppCompatActivity {
                                 JSONArray properties=herb_data.getJSONArray("properties");
                                 JSONArray places=herb_data.getJSONArray("places");
                                 plantDetail.name=herb_data.getString("botanical_name");
+                                tvPlantName.setText(plantDetail.name);
                                 int i;
                                 plantDetail.recommendations=new ArrayList<>();
                                 for(i=0;i<recommendations.length();i++){

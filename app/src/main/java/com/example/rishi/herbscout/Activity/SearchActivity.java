@@ -3,6 +3,7 @@ package com.example.rishi.herbscout.Activity;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     String searchQuery;
     List<Plant> plantList;
     PlantListAdapter plantListAdapter;
-    LinearLayoutManager linearLayoutManager;
+    GridLayoutManager gridLayoutManager;
     RecyclerView rvPlant;
     TextView tvNoResults;
     ProgressDialog progressDialog;
@@ -47,8 +48,8 @@ public class SearchActivity extends AppCompatActivity {
         plantList=new ArrayList<>();
         rvPlant= (RecyclerView) findViewById(R.id.rvPlant);
         tvNoResults= (TextView) findViewById(R.id.tvNoResults);
-        linearLayoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        rvPlant.setLayoutManager(linearLayoutManager);
+        gridLayoutManager=new GridLayoutManager(this,2);
+        rvPlant.setLayoutManager(gridLayoutManager);
         progressDialog=new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Loading");
@@ -68,11 +69,12 @@ public class SearchActivity extends AppCompatActivity {
                         plantList=new ArrayList<>();
                         try {
                             JSONObject jsonObject= new JSONObject(response.toString());
-                            JSONArray jsonArray=jsonObject.getJSONObject("data").getJSONArray("results");
+                            JSONArray jsonArray=jsonObject.getJSONArray("results");
                             if(jsonArray.length()!=0){
                                 for(int i=0;i<jsonArray.length();i++){
                                     Plant plant=new Plant();
                                     plant.name=jsonArray.getJSONObject(i).getString("botanical_name");
+                                    plant.image=jsonArray.getJSONObject(i).getString("image");
                                     plantList.add(plant);
                                 }
                                 plantListAdapter=new PlantListAdapter(SearchActivity.this,plantList);

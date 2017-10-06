@@ -6,4 +6,5 @@ package com.example.rishi.herbscout.Models;
 
 public class Plant {
     public String name;
+    public String image;
 }

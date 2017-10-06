@@ -136,7 +136,7 @@ public class ClassificationActivity extends AppCompatActivity implements View.On
                             JSONObject jsonObject=new JSONObject(response);
                             if(jsonObject.getString("success").contentEquals("true")){
                                 Log.d("DATA",jsonObject.getJSONObject("data").toString());
-                                String name=jsonObject.getJSONObject("data").getJSONObject("herb_data").getString("botanical_name");
+                                String name=jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("herb_data").getString("botanical_name");
                                 Intent intent=new Intent(ClassificationActivity.this, PlantDetailActivity.class);
                                 intent.putExtra("plantName",name);
                                 startActivity(intent);
