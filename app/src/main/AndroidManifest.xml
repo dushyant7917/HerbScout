@@ -17,17 +17,21 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.HomeActivity" />
+        <activity android:name=".Activity.HomeActivity"
+            android:launchMode= "singleInstance"/>
         <activity android:name=".Activity.ClassificationActivity" />
-        <activity android:name=".Activity.SearchActivity" />
-        <activity android:name=".Activity.PlantDetailActivity" />
+        <activity android:name=".Activity.SearchActivity"
+            android:launchMode= "singleInstance"
+            android:parentActivityName=".Activity.HomeActivity"/>
+        <activity android:name=".Activity.PlantDetailActivity"/>
         <activity android:name=".Activity.MapActivity"></activity>
     </application>
 

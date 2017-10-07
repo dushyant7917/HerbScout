@@ -147,7 +147,7 @@ public class PlantDetailActivity extends AppCompatActivity {
                                 for(i=0;i<parts_used.length();i++){
                                     plantDetail.parts_used.add(parts_used.getString(i));
                                 }
-                                partsUsedAdapter=new StringAdapter(context,plantDetail.parts_used);
+//                                partsUsedAdapter=new StringAdapter(context,plantDetail.parts_used);
 //                                rvPartsUsed.setAdapter(partsUsedAdapter);
 
                                 plantDetail.properties=new ArrayList<>();
@@ -155,14 +155,14 @@ public class PlantDetailActivity extends AppCompatActivity {
                                     plantDetail.properties.add(properties.getString(i));
                                     Log.d("PROPERTIES",plantDetail.properties.get(i));
                                 }
-                                propertiesAdapter=new StringAdapter(context,plantDetail.properties);
+//                                propertiesAdapter=new StringAdapter(context,plantDetail.properties);
 //                                rvProperties.setAdapter(propertiesAdapter);
 
                                 plantDetail.places=new ArrayList<>();
                                 for(i=0;i<places.length();i++){
                                     plantDetail.places.add(places.getString(i));
                                 }
-                                placesAdapter=new StringAdapter(context,plantDetail.places);
+//                                placesAdapter=new StringAdapter(context,plantDetail.places);
 //                                rvPlaces.setAdapter(placesAdapter);
 
 
@@ -177,7 +177,7 @@ public class PlantDetailActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DETAIL",error.getMessage());
+                Log.d("DETAIL",""+error.getMessage());
             }
         });
         AppController.getInstance().addToRequestQueue(request);
@@ -193,6 +193,7 @@ public class PlantDetailActivity extends AppCompatActivity {
         RecyclerView rvFragment;
         StringAdapter adapter;
         GridLayoutManager gridLayoutManager;
+        Boolean TYPE;
         public PlaceholderFragment() {
         }
 
@@ -200,11 +201,11 @@ public class PlantDetailActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(ArrayList<String> stringList) {
+        public static PlaceholderFragment newInstance(ArrayList<String> stringList, int TYPE) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            Log.d("FRAGMENT_NEW",""+stringList.size());
             args.putStringArrayList("list", stringList);
+            args.putInt("TYPE",TYPE);
             fragment.setArguments(args);
             return fragment;
         }
@@ -217,9 +218,9 @@ public class PlantDetailActivity extends AppCompatActivity {
             linearLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
             gridLayoutManager=new GridLayoutManager(getActivity(),2);
             rvFragment.setLayoutManager(linearLayoutManager);
-            adapter=new StringAdapter(getActivity(),getArguments().getStringArrayList("list"));
+            Log.d("TYPEFRAG",""+getArguments().getInt("TYPE"));
+            adapter=new StringAdapter(getActivity(),getArguments().getStringArrayList("list"),getArguments().getInt("TYPE"));
             rvFragment.setAdapter(adapter);
-            Log.d("FRAGMENT",""+getArguments().getStringArrayList("list").size());
             return rootView;
         }
     }
@@ -240,30 +241,34 @@ public class PlantDetailActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    return PlaceholderFragment.newInstance(plantDetail.properties);
+                    return PlaceholderFragment.newInstance(plantDetail.properties,0);
                 case 1:
-                    return PlaceholderFragment.newInstance(plantDetail.parts_used);
+                    return PlaceholderFragment.newInstance(plantDetail.parts_used,1);
                 case 2:
-                    return PlaceholderFragment.newInstance(plantDetail.places);
+                    return PlaceholderFragment.newInstance(plantDetail.places,2);
+                case 3:
+                    return PlaceholderFragment.newInstance(plantDetail.recommendations,3);
             }
-            return PlaceholderFragment.newInstance(new ArrayList<String>());
+            return PlaceholderFragment.newInstance(new ArrayList<String>(),5);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Properties";
+                    return "Property";
                 case 1:
                     return "Parts Used";
                 case 2:
                     return "Places";
+                case 3:
+                    return "Similar Plants";
             }
             return null;
         }

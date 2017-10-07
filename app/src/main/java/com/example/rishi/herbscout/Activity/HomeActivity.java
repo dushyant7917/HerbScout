@@ -69,7 +69,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btChoose.setOnClickListener(this);
 
         progressDialog=new ProgressDialog(this);
-        progressDialog.setTitle("Uploading");
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(false);
 
