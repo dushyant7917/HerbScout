@@ -1,14 +1,27 @@
 package com.example.rishi.herbscout.Activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +32,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.example.rishi.herbscout.Adapter.PlantListAdapter;
 import com.example.rishi.herbscout.Adapter.StringAdapter;
+import com.example.rishi.herbscout.Dialog.MapDialog;
 import com.example.rishi.herbscout.Models.Plant;
 import com.example.rishi.herbscout.Models.PlantDetail;
 import com.example.rishi.herbscout.Models.URLS;
@@ -36,19 +50,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlantDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class PlantDetailActivity extends AppCompatActivity {
 
-    RecyclerView rvProperties,rvPartsUsed,rvPlaces;
+//    RecyclerView rvProperties,rvPartsUsed,rvPlaces;
     List<Plant> propertiesList,partsUsedList,placesList;
     StringAdapter propertiesAdapter,partsUsedAdapter,placesAdapter;
-    LinearLayoutManager llm1,llm2,llm3;
+//    LinearLayoutManager llm1,llm2,llm3;
     String plantName;
     PlantDetail plantDetail;
     TextView tvPlantName;
     ImageView ivPlant;
-    MapView mapView;
-    GoogleMap googleMap;
     Context context;
+    Button btShowMap;
+
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+    TabLayout tabLayout;
 
 
     @Override
@@ -58,19 +75,27 @@ public class PlantDetailActivity extends AppCompatActivity implements OnMapReady
         context=this;
         ivPlant= (ImageView) findViewById(R.id.ivPlant);
         tvPlantName= (TextView) findViewById(R.id.tvPlantName);
-        rvProperties= (RecyclerView) findViewById(R.id.rvProperties);
-        rvPartsUsed= (RecyclerView) findViewById(R.id.rvPartsUsed);
-        rvPlaces= (RecyclerView) findViewById(R.id.rvPlaces);
-        llm1=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        llm2=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        llm3=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        rvProperties.setLayoutManager(llm1);
-        rvPartsUsed.setLayoutManager(llm2);
-        rvPlaces.setLayoutManager(llm3);
+        btShowMap=findViewById(R.id.btShowMap);
+        context=this;
+
+        btShowMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog=new MapDialog(PlantDetailActivity.this,plantDetail.lat,plantDetail.lng);
+                dialog.show();
+            }
+        });
         plantName=getIntent().getExtras().getString("plantName");
         plantName=plantName.toLowerCase();
         plantName=plantName.replace(' ','-');
 //        plantName="Azadirachta indica";
+
+        tabLayout= (TabLayout) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.container);
+
+
+
+
         plantDetail=new PlantDetail();
         tvPlantName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,11 +103,6 @@ public class PlantDetailActivity extends AppCompatActivity implements OnMapReady
                 startActivity(new Intent(PlantDetailActivity.this,MapActivity.class));
             }
         });
-
-        mapView = (MapView) findViewById(R.id.map);
-        mapView.onCreate(null);
-        mapView.getMapAsync(this);
-
         getPlantName();
 
     }
@@ -128,7 +148,7 @@ public class PlantDetailActivity extends AppCompatActivity implements OnMapReady
                                     plantDetail.parts_used.add(parts_used.getString(i));
                                 }
                                 partsUsedAdapter=new StringAdapter(context,plantDetail.parts_used);
-                                rvPartsUsed.setAdapter(partsUsedAdapter);
+//                                rvPartsUsed.setAdapter(partsUsedAdapter);
 
                                 plantDetail.properties=new ArrayList<>();
                                 for(i=0;i<properties.length();i++){
@@ -136,14 +156,19 @@ public class PlantDetailActivity extends AppCompatActivity implements OnMapReady
                                     Log.d("PROPERTIES",plantDetail.properties.get(i));
                                 }
                                 propertiesAdapter=new StringAdapter(context,plantDetail.properties);
-                                rvProperties.setAdapter(propertiesAdapter);
+//                                rvProperties.setAdapter(propertiesAdapter);
 
                                 plantDetail.places=new ArrayList<>();
                                 for(i=0;i<places.length();i++){
                                     plantDetail.places.add(places.getString(i));
                                 }
                                 placesAdapter=new StringAdapter(context,plantDetail.places);
-                                rvPlaces.setAdapter(placesAdapter);
+//                                rvPlaces.setAdapter(placesAdapter);
+
+
+                                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                                mViewPager.setAdapter(mSectionsPagerAdapter);
+                                tabLayout.setupWithViewPager(mViewPager);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -158,11 +183,90 @@ public class PlantDetailActivity extends AppCompatActivity implements OnMapReady
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    @Override
-    public void onMapReady(GoogleMap mMap) {
-        MapsInitializer.initialize(context);
-        this.googleMap = mMap;
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mapView.onResume();
+
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        LinearLayoutManager linearLayoutManager;
+        RecyclerView rvFragment;
+        StringAdapter adapter;
+        GridLayoutManager gridLayoutManager;
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(ArrayList<String> stringList) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            Log.d("FRAGMENT_NEW",""+stringList.size());
+            args.putStringArrayList("list", stringList);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_tab, container, false);
+            rvFragment=rootView.findViewById(R.id.rvFragment);
+            linearLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+            gridLayoutManager=new GridLayoutManager(getActivity(),2);
+            rvFragment.setLayoutManager(linearLayoutManager);
+            adapter=new StringAdapter(getActivity(),getArguments().getStringArrayList("list"));
+            rvFragment.setAdapter(adapter);
+            Log.d("FRAGMENT",""+getArguments().getStringArrayList("list").size());
+            return rootView;
+        }
     }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            switch (position){
+                case 0:
+                    return PlaceholderFragment.newInstance(plantDetail.properties);
+                case 1:
+                    return PlaceholderFragment.newInstance(plantDetail.parts_used);
+                case 2:
+                    return PlaceholderFragment.newInstance(plantDetail.places);
+            }
+            return PlaceholderFragment.newInstance(new ArrayList<String>());
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Properties";
+                case 1:
+                    return "Parts Used";
+                case 2:
+                    return "Places";
+            }
+            return null;
+        }
+    }
+
 }

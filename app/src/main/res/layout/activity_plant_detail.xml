@@ -1,106 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.rishi.herbscout.Activity.PlantDetailActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.rishi.herbscout.Activity.PlantDetailActivity">
 
-        <ImageView
-            android:id="@+id/ivPlant"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/colorPrimaryDark" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvPlantName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Azadirachta indica"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/white"
-            android:textSize="36sp" />
-    </FrameLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent">
+            <ImageView
+                android:id="@+id/ivPlant"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/colorPrimaryDark"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tvPlantName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Azadirachta indica"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/white"
+                android:textSize="36sp" />
+        </FrameLayout>
+
+        <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp">-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:text="About Plant"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Headline" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Properties"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rvProperties"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Parts Used"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rvPartsUsed"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Places"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body2" />-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rvPlaces"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+        <!--</LinearLayout>-->
+
+        <!--<com.google.android.gms.maps.MapView-->
+        <!--android:id="@+id/map"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+        <!--</LinearLayout>-->
+        <!--</ScrollView>-->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="About Plant"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                android:background="@color/colorPrimary"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="@color/white" />
 
-            <LinearLayout
+            <android.support.v4.view.ViewPager
+                android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Properties"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvProperties"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Parts Used"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvPartsUsed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Places"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvPlaces"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+            </android.support.v4.view.ViewPager>
 
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btShowMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_weight="1"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Show on Map" />
+
+</FrameLayout>

@@ -65,6 +65,7 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.MyVi
 
         public void setData(final Plant data){
             String name=data.name.replace('-',' ');
+            Log.d("NAME",name);
             tvPlant.setText(name.substring(0,1).toUpperCase()+name.substring(1).toLowerCase());
             String newname=data.name.toLowerCase().replace(' ','-');
             String url= URLS.BASE_URL+"PlantImages/"+newname+"/0.jpg";

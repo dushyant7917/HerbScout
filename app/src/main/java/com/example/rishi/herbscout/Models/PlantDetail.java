@@ -1,5 +1,6 @@
 package com.example.rishi.herbscout.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
 
 public class PlantDetail {
     public String name;
-    public List<String> properties;
-    public List<String> parts_used;
-    public List<String> places;
-    public List<String> recommendations;
-    public List<Double> lat,lng;
+    public ArrayList<String> properties;
+    public ArrayList<String> parts_used;
+    public ArrayList<String> places;
+    public ArrayList<String> recommendations;
+    public ArrayList<Double> lat,lng;
 }

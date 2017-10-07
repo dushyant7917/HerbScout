@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog=new ProgressDialog(this);
         progressDialog.setTitle("Uploading");
         progressDialog.setIndeterminate(false);
+        progressDialog.setCancelable(false);
 
     }
 
@@ -132,6 +134,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void doUpload() {
+        progressDialog.show();
         ivUpload.buildDrawingCache();
         Log.d("PATH:",getPath(uri));
         Bitmap bitmap = BitmapFactory.decodeFile(getPath(uri));
@@ -144,7 +147,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onResponse(String response) {
                         Log.d("IMAGE",response);
+                        progressDialog.hide();
                         try {
+
                             JSONObject jsonObject=new JSONObject(response);
                             if(jsonObject.getString("success").contentEquals("true")){
                                 Log.d("DATA",jsonObject.getJSONObject("data").toString());
@@ -152,6 +157,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 Intent intent=new Intent(HomeActivity.this, PlantDetailActivity.class);
                                 intent.putExtra("plantName",name);
                                 startActivity(intent);
+                            }else {
+                                Toast.makeText(HomeActivity.this, ""+jsonObject.getJSONObject("message"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -161,6 +168,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("IMAGE error",""+error.getMessage());
+                progressDialog.hide();
             }
         }){
             @Override
@@ -192,12 +200,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (resultData != null) {
                 uri = resultData.getData();
                 showImage(uri);
+                showUploadButton();
             }
         }
     }
 
+    private void showUploadButton() {
+        btUpload.setVisibility(View.VISIBLE);
+    }
+
     private void showImage(Uri uri) {
-        Toast.makeText(this, "fileUri: "+uri.toString(), Toast.LENGTH_SHORT).show();
         this.uri=uri;
         ivUpload.setImageURI(uri);
     }
