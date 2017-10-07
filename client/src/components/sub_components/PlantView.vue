@@ -14,7 +14,7 @@
                             {{ item.herb_data.botanical_name | capitalizeName }}
                         </div>
                         <div class="center-image">
-                            <v-parallax :src="hyphenateImage(item.herb_data.botanical_name)" class="image-view"></v-parallax>
+                            <img :src="hyphenateImage(item.herb_data.botanical_name)" class="image-view" alt="Main Image">
                         </div>
                     </v-container>
                 </v-card-title>
@@ -91,17 +91,15 @@
                                 <v-container style="height: 100%">
                                     <v-card style="height: 100%" class="center-vertical">
                                         <v-card-text>
-                                            <v-container style="height: 100%">
-                                                <div style="height: 100%">
-                                                    <v-card style="height: 100%">
-                                                        <v-card-text>
-                                                            <gmap-map style="height: 100%" :center="{lat: 20.5937, lng: 78.9629}" :zoom="4" class="map-styles">
-                                                                <gmap-marker v-for="pos in item.map_info" :key="pos.latitude" :position="{lat: parseFloat(pos.latitude), lng: parseFloat(pos.longitude)}"></gmap-marker>
-                                                            </gmap-map>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                </div>
-                                            </v-container>
+                                            <div style="height: 100%">
+                                                <v-card style="height: 100%">
+                                                    <v-card-text>
+                                                        <gmap-map style="height: 100%" :center="{lat: 20.5937, lng: 78.9629}" :zoom="4" class="map-styles">
+                                                            <gmap-marker v-for="pos in item.map_info" :key="pos.latitude" :position="{lat: parseFloat(pos.latitude), lng: parseFloat(pos.longitude)}"></gmap-marker>
+                                                        </gmap-map>
+                                                    </v-card-text>
+                                                </v-card>
+                                            </div>
                                         </v-card-text>
                                     </v-card>
                                 </v-container>

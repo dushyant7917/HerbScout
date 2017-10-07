@@ -62,7 +62,7 @@
         },
         data() {
             return {
-                plantName: '',
+                plantName: this.name,
                 loading: false,
                 rules: {
                     name: (value) => {
@@ -84,6 +84,7 @@
         },
         watch: {
             name(updatedValue) {
+                this.plantName = updatedValue;
                 this.searchPlantInfo();
             }
         },
