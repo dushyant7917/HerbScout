@@ -81,7 +81,7 @@ router.get('/get_specific_plant', (req, res) => {
             if (body.found === false || body.identified === false) {
                 return res.json({
                     success: false,
-                    message: 'Sorry, unable to find something matching that name'
+                    message: 'Sorry, Unable to find something matching that name'
                 });
             } else {
                 return res.json({
@@ -93,7 +93,7 @@ router.get('/get_specific_plant', (req, res) => {
             console.log(body);
             return res.json({
                 success: false,
-                message: 'Something happened at our end. Sorry about that...'
+                message: 'Something happened at our end. Sorry about that'
             });
         }
     });

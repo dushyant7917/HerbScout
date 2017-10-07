@@ -1,13 +1,13 @@
 <template>
     <v-container class="text-xs-center">
-        <form @submit.prevent="searchPlantInfo">
+        <form @submit.prevent="updateRoute">
             <v-layout row align-center wrap>
                 <v-flex xs11>
                     <v-text-field v-model="plantName" label="Enter a Name:" name="plantName" :rules="[rules.name]">
                     </v-text-field>
                 </v-flex>
                 <v-flex xs1>
-                    <v-btn icon class="red--text" :loading="loading" :disabled="loading" @click.stop="searchPlantInfo">
+                    <v-btn icon class="red--text" :loading="loading" :disabled="loading" @click.stop="updateRoute">
                         <v-icon>search</v-icon>
                     </v-btn>
                 </v-flex>
@@ -62,7 +62,7 @@
         },
         data() {
             return {
-                plantName: this.name,
+                plantName: '',
                 loading: false,
                 rules: {
                     name: (value) => {
@@ -82,21 +82,31 @@
         mounted() {
             this.searchPlantInfo();
         },
+        watch: {
+            name(updatedValue) {
+                this.searchPlantInfo();
+            }
+        },
         methods: {
             hyphenatePlantName(name) {
                 return name.split(' ').map(element => {
                     return element.charAt(0).toLowerCase() + element.slice(1);
                 }).join('-');
             },
-            searchPlantInfo() {
+            updateRoute() {
                 if (!queryRegex.test(this.plantName)) {
                     this.$emit('displayMessage', 'error', 'Invalid Characters in Plant Name');
                     return;
                 }
 
+                this.$router.push({
+                    path: `/search/${this.plantName}`
+                });
+            },
+            searchPlantInfo() {
                 this.loading = true;
 
-                searchPlantInfo(this.plantName)
+                searchPlantInfo(this.name)
                     .then(data => {
                         if (data.error === undefined) {
                             if (data.success) {

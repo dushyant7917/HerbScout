@@ -13,4 +13,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 Test.*
+*py
 Result.txt
+Result_1.txt
