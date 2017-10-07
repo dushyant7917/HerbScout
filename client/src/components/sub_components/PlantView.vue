@@ -93,9 +93,13 @@
                                         <v-card-text>
                                             <v-container style="height: 100%">
                                                 <div style="height: 100%">
-                                                    <gmap-map style="height: 100%" :center="{lat: 20.5937, lng: 78.9629}" :zoom="4" class="map-styles">
-                                                        <gmap-marker v-for="pos in item.map_info" :key="pos.latitude" :position="{lat: parseFloat(pos.latitude), lng: parseFloat(pos.longitude)}"></gmap-marker>
-                                                    </gmap-map>
+                                                    <v-card style="height: 100%">
+                                                        <v-card-text>
+                                                            <gmap-map style="height: 100%" :center="{lat: 20.5937, lng: 78.9629}" :zoom="4" class="map-styles">
+                                                                <gmap-marker v-for="pos in item.map_info" :key="pos.latitude" :position="{lat: parseFloat(pos.latitude), lng: parseFloat(pos.longitude)}"></gmap-marker>
+                                                            </gmap-map>
+                                                        </v-card-text>
+                                                    </v-card>
                                                 </div>
                                             </v-container>
                                         </v-card-text>
