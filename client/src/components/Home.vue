@@ -11,30 +11,32 @@
                 </v-card-text>
                 <v-card-title>
                     <v-container>
-                        <v-layout row align-center wrap>
-                            <v-flex xs12>
-                                <v-container style="max-width: 600px;">
-                                    <v-text-field v-model="plantName" label="Search Something. Will Ya..." name="plantName" :rules="[rules.name]">
-                                    </v-text-field>
-                                </v-container>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-container>
-                                    <v-layout row wrap align-center>
-                                        <v-flex xs12>
-                                            <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
-                                                <span>Upload </span>
-                                                <v-icon>file_upload</v-icon>
-                                            </v-btn>
-                                        </v-flex>
-                                        <v-flex xs12 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
-                                            <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
-                                            </v-text-field>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-flex>
-                        </v-layout>
+                        <form @submit.prevent="searchPlantData">
+                            <v-layout row align-center wrap>
+                                <v-flex xs12>
+                                    <v-container style="max-width: 600px;">
+                                        <v-text-field v-model="plantName" label="Search Something. Will Ya..." name="plantName" :rules="[rules.name]">
+                                        </v-text-field>
+                                    </v-container>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-container>
+                                        <v-layout row wrap align-center>
+                                            <v-flex xs12>
+                                                <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
+                                                    <span>Upload </span>
+                                                    <v-icon>file_upload</v-icon>
+                                                </v-btn>
+                                            </v-flex>
+                                            <v-flex xs12 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
+                                                <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
+                                                </v-text-field>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-flex>
+                            </v-layout>
+                        </form>
                         <v-layout row align-center>
                             <v-flex xs12>
                                 <v-btn @click.stop="searchPlantData" class="green white--text" :loading="loading" :disabled="loading">

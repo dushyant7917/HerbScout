@@ -4,6 +4,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var history = require('connect-history-api-fallback');
 
 var config = require('./utilities/config');
 var mongoose = require('mongoose');
@@ -43,6 +44,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use(history());
 
 app.use('/', index);
 app.use('/auth', users);
