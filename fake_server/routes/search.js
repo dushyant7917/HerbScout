@@ -52,6 +52,36 @@ router.get('/plant_info', (req, res) => {
         }
     });
 });
+2
+
+router.get('/auto_complete', (req, res) => {
+    var query = req.query.query;
+    console.log(query);
+
+    request(`${utilities.BASE_URL}/auto_complete/${query}/`, (error, response, body) => {
+        if (error) {
+            console.log(error);
+            return res.json({
+                success: false,
+                message: 'Unable to get the data. Please try again later'
+            });
+        }
+        console.log(response.statusCode);
+
+        if (response.statusCode >= 200 && response.statusCode < 400) {
+            body = JSON.parse(body);
+            return res.json({
+                success: true,
+                results: body.result
+            });
+        } else {
+            return res.json({
+                success: false,
+                message: 'Something happened at our end. Sorry about that...'
+            });
+        }
+    });
+});
 
 router.get('/get_specific_plant', (req, res) => {
     var plantName = req.query.name;

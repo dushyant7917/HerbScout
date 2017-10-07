@@ -85,10 +85,21 @@ var getSpecificPlant = (plantName) => {
         });
 };
 
+var autoComplete = (query) => {
+    return axios.get(`${BASE_URL}/search/auto_complete?query=${query}`)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            return handleError(error, ERROR_MSG);
+        });
+};
+
 export {
     loginUser,
     registerUser,
     sendPlantImage,
     searchPlantInfo,
-    getSpecificPlant
+    getSpecificPlant,
+    autoComplete
 };

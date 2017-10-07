@@ -17,6 +17,8 @@
                                     <v-container style="max-width: 600px;">
                                         <v-text-field v-model="plantName" label="Search Something. Will Ya..." name="plantName" :rules="[rules.name]">
                                         </v-text-field>
+                                        <!-- <v-select label="Search Something. Will Ya..." autocomplete :loading="autoCompleteLoading" cache-items :items="items" :rules="[rules.name]"
+                                            :search-input.sync="select" v-model="plantName"></v-select> -->
                                     </v-container>
                                 </v-flex>
                                 <v-flex xs12>
@@ -59,7 +61,8 @@
 <script>
     import {
         sendPlantImage,
-        getSpecificPlant
+        getSpecificPlant,
+        autoComplete
     } from './../api/api';
 
     import {
@@ -69,6 +72,7 @@
     } from './../utitility';
 
     import PlantView from './sub_components/PlantView';
+    import _ from 'lodash';
 
     export default {
         data() {
@@ -83,6 +87,9 @@
                 displayModal: false,
 
                 loading: false,
+                items: [],
+                autoCompleteLoading: false,
+                select: '',
 
                 rules: {
                     name: (value) => {
@@ -96,6 +103,11 @@
         },
         mounted() {
             this.fileReader.addEventListener('load', this.convertToBase64);
+        },
+        watch: {
+            select(value) {
+                value && this.getAutoCompleteData(value);
+            }
         },
         methods: {
             handleFileChange(event) {
@@ -113,6 +125,20 @@
                 let base64Result = this.fileReader.result.split(',')[1];
                 this.imageBase64 = base64Result;
             },
+            getAutoCompleteData: _.debounce((data) => {
+                if (this.plantName !== '') {
+                    this.autoCompleteLoading = true;
+                    autoComplete(data)
+                        .then(data => {
+                            if (data.success && data.error === undefined) {
+                                console.log(data);
+                                this.items = data.results;
+                            }
+
+                            this.autoCompleteLoading = false;
+                        });
+                }
+            }, 500),
             searchPlantData() {
                 if (this.plantName === '') {
                     if (this.imageFile === null) {
