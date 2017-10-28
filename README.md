@@ -7,5 +7,5 @@ Application Features:
 3. Search engine for any information regarding the medicinal use, properties etc of the herbs. 
 4. Recommendation engine for showing related content to a specific herb.
 
-## Android App Demo -> https://www.youtube.com/watch?v=0uzXjkNyQVA&t=10s
-## Web App Demo -> https://www.youtube.com/watch?v=K4uV51nycqM&feature=youtu.be
+#### Android App Demo -> https://www.youtube.com/watch?v=0uzXjkNyQVA&t=10s
+#### Web App Demo -> https://www.youtube.com/watch?v=K4uV51nycqM&feature=youtu.be
