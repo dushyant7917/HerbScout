@@ -6,14 +6,14 @@
         </v-snackbar>
 
         <v-toolbar light class="extra-margin-bottom">
-            <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="displayDrawer = true"></v-toolbar-side-icon>
+            <!-- <v-toolbar-side-icon class="hidden-md-and-up" @click.stop="displayDrawer = true"></v-toolbar-side-icon> -->
             <v-toolbar-title class="blue--text darken-2">HerbScout</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-items class="hidden-sm-and-down">
+            <v-toolbar-items>
                 <v-btn flat :to="'/'" exact v-if="!userExists()">
                     Home
                 </v-btn>
-                <v-btn flat :to="'/login'" exact v-if="!userExists()">
+                <!-- <v-btn flat :to="'/login'" exact v-if="!userExists()">
                     Login
                 </v-btn>
                 <v-btn flat :to="'/dashboard'" exact v-else="userExists()">
@@ -21,11 +21,11 @@
                 </v-btn>
                 <v-btn flat @click.stop="logoutUser" exact v-if="userExists()">
                     Logout
-                </v-btn>
+                </v-btn> -->
             </v-toolbar-items>
         </v-toolbar>
 
-        <v-navigation-drawer temporary clipped height="100%" v-model="displayDrawer">
+        <!-- <v-navigation-drawer temporary clipped height="100%" v-model="displayDrawer">
             <v-list class="pt-0">
                 <v-list-tile :to="'/'" exact v-if="!userExists()">
                     <v-list-tile-action>
@@ -60,7 +60,7 @@
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
-        </v-navigation-drawer>
+        </v-navigation-drawer> -->
 
         <main>
             <v-layout>

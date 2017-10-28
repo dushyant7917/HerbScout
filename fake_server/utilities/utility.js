@@ -43,7 +43,9 @@ function checkAuthentication(req, res, next) {
 const usernameRegex = /^[a-zA-Z0-9 ]{5,50}$/;
 const fileTypeRegex = /^(\.jpg|\.jpeg|\.png)$/;
 const passwordRegex = /^[a-zA-Z0-9 :;\/\-+*_\.]{8,50}$/;
-const nameRegex = /^[a-zA-Z0-9 ]{3,100}$/;
+const queryRegex = /^[a-zA-Z0-9 ]{3,100}$/;
+const BASE_URL = 'http://localhost:8000';
+const specificPlantName = /^[a-z]+\-?[a-z]+?$/;
 
 module.exports = {
     encrypt: encrypt,
@@ -52,5 +54,7 @@ module.exports = {
     usernameRegex: usernameRegex,
     fileTypeRegex: fileTypeRegex,
     passwordRegex: passwordRegex,
-    nameRegex: nameRegex
+    queryRegex: queryRegex,
+    BASE_URL: BASE_URL,
+    specificPlantName: specificPlantName
 };

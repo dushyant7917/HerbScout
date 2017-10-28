@@ -23,9 +23,20 @@
 .image-zoom:hover .card__media__background,
 .image-zoom:focus .card__media__background {
     transform: scale(1.2);
+    background-position: center;
+    background-size: cover;
 }
 
 .image-zoom .card__media__background {
+    transition: all 2s;
+}
+
+.image-zoom-helper:hover,
+.image-zoom-helper:focus {
+    transform: scale(1.2);
+}
+
+.image-zoom-helper {
     transition: all 2s;
 }
 
@@ -47,4 +58,49 @@
 
 .prompt-main-text:hover {
     color: #008000;
+}
+
+.center-vertical {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1 0;
+    height: 100%;
+}
+
+.card__text {
+    height: 100%;
+}
+
+.image-view {
+    margin-top: 21px;
+    width: 90%;
+    border-radius: 7px;
+    -webkit-box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 20px 70px 0px rgba(0, 0, 0, 0.75);
+}
+
+.map-styles {
+    width: 100%;
+    min-height: 300px;
+}
+
+.center-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.background-main-image {
+    height: 100%;
+    background: url('/static/logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.btn--active>.btn__content {
+    color: #28D219;
 }

@@ -3,37 +3,56 @@
 
         <input type="file" name="file" ref="fileInput" class="input-file" @change="handleFileChange" />
 
-        <v-layout row align-center wrap>
-            <v-flex xs12 sm12 md5 lg5>
-                <v-text-field v-model="plantName" label="Enter a Name:" name="plantName" :rules="[rules.name]">
-                </v-text-field>
-            </v-flex>
-            <v-flex xs12 sm12 md2 lg2>
-                <h3 class="grey--text">--OR--</h3>
-            </v-flex>
-            <v-flex xs12 sm12 md5 lg5>
-                <v-layout row wrap align-center>
-                    <v-flex xs12 sm6>
-                        <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
-                            <v-icon>file_upload</v-icon>
-                            <span>Upload Photo</span>
-                        </v-btn>
-                    </v-flex>
-                    <v-flex xs12 sm6 @click.stop="$refs.fileInput.click()">
-                        <v-text-field :disabled="true" :label="fileName">
-                        </v-text-field>
-                    </v-flex>
-                </v-layout>
-            </v-flex>
-        </v-layout>
-        <v-layout row align-center>
-            <v-flex xs12>
-                <v-btn @click.stop="searchPlantData" class="green white--text" :loading="loading" :disabled="loading">
-                    <span class="main-submit-button">Submit</span>
-                    <v-icon>send</v-icon>
-                </v-btn>
-            </v-flex>
-        </v-layout>
+        <div class="justify-center align-center" style="display: flex">
+            <v-card style="max-width: 800px;">
+                <v-card-text style="height: 200px;">
+                    <!-- <img src="/static/logo.png" alt="Image" style="height: 100%;" class="image-zoom"> -->
+                    <div class="background-main-image image-zoom-helper"></div>
+                </v-card-text>
+                <v-card-title>
+                    <v-container>
+                        <form @submit.prevent="searchPlantData">
+                            <v-layout row align-center wrap>
+                                <v-flex xs12>
+                                    <v-container style="max-width: 600px;">
+                                        <v-text-field v-model="plantName" label="Search Something. Will Ya..." name="plantName" :rules="[rules.name]">
+                                        </v-text-field>
+                                        <!-- <v-select label="Search Something. Will Ya..." autocomplete :loading="autoCompleteLoading" cache-items :items="items" :rules="[rules.name]"
+                                            :search-input.sync="select" v-model="plantName"></v-select> -->
+                                    </v-container>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <v-container>
+                                        <v-layout row wrap align-center>
+                                            <v-flex xs12>
+                                                <v-btn @click.stop="$refs.fileInput.click()" class="red white--text" fluid>
+                                                    <span>Upload </span>
+                                                    <v-icon>file_upload</v-icon>
+                                                </v-btn>
+                                            </v-flex>
+                                            <v-flex xs12 @click.stop="$refs.fileInput.click()" class="text-xs-center" style="display: flex; justify-content: center; align-items: center;">
+                                                <v-text-field :disabled="true" :label="fileName" style="max-width: 300px;">
+                                                </v-text-field>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-flex>
+                            </v-layout>
+                        </form>
+                        <v-layout row align-center>
+                            <v-flex xs12>
+                                <v-btn @click.stop="searchPlantData" class="green white--text" :loading="loading" :disabled="loading">
+                                    <span class="main-submit-button">Submit</span>
+                                    <v-icon>send</v-icon>
+                                </v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card-title>
+            </v-card>
+        </div>
+
+        <PlantView :item="plantInfo" :closeModal="closeModal" :showModal="displayModal" :getPlantInfo="getPlantInfo"></PlantView>
 
     </v-container>
 </template>
@@ -42,34 +61,53 @@
 <script>
     import {
         sendPlantImage,
-        searchPlantInfo
+        getSpecificPlant,
+        autoComplete
     } from './../api/api';
 
     import {
-        nameRegex,
-        fileExtensionRegex
+        queryRegex,
+        fileExtensionRegex,
+        specificPlantNameRegex
     } from './../utitility';
+
+    import PlantView from './sub_components/PlantView';
+    import _ from 'lodash';
 
     export default {
         data() {
             return {
                 plantName: '',
-                fileName: 'Filename will be displayed here...',
+                fileName: '',
                 imageFile: null,
                 imageBase64: '',
                 fileReader: new FileReader(),
 
+                plantInfo: {},
+                displayModal: false,
+
                 loading: false,
+                items: [],
+                autoCompleteLoading: false,
+                select: '',
 
                 rules: {
                     name: (value) => {
-                        return nameRegex.test(value) || 'Invalid Characters in Data';
+                        return queryRegex.test(value) || 'Invalid Characters in Data';
                     }
                 }
             };
         },
+        components: {
+            PlantView
+        },
         mounted() {
             this.fileReader.addEventListener('load', this.convertToBase64);
+        },
+        watch: {
+            select(value) {
+                value && this.getAutoCompleteData(value);
+            }
         },
         methods: {
             handleFileChange(event) {
@@ -87,6 +125,20 @@
                 let base64Result = this.fileReader.result.split(',')[1];
                 this.imageBase64 = base64Result;
             },
+            getAutoCompleteData: _.debounce((data) => {
+                if (this.plantName !== '') {
+                    this.autoCompleteLoading = true;
+                    autoComplete(data)
+                        .then(data => {
+                            if (data.success && data.error === undefined) {
+                                console.log(data);
+                                this.items = data.results;
+                            }
+
+                            this.autoCompleteLoading = false;
+                        });
+                }
+            }, 500),
             searchPlantData() {
                 if (this.plantName === '') {
                     if (this.imageFile === null) {
@@ -99,7 +151,8 @@
                         .then(data => {
                             if (data.error === undefined) {
                                 if (data.success) {
-                                    console.log(data);
+                                    this.plantInfo = data.data.result;
+                                    this.displayModal = true;
                                     this.resetFields();
 
                                 } else {
@@ -115,19 +168,26 @@
                         });
 
                 } else {
-                    if (!nameRegex.test(this.plantName)) {
+                    if (!queryRegex.test(this.plantName)) {
                         this.$emit('displayMessage', 'error', 'Invalid Characters in Plant Name');
                         return;
                     }
 
                     this.loading = true;
 
-                    searchPlantInfo(this.plantName)
+                    this.$router.push({
+                        path: `/search/${this.plantName}`
+                    });
+                }
+            },
+            getSpecificPlant(name) {
+                if (specificPlantNameRegex.test(name)) {
+                    getSpecificPlant(name)
                         .then(data => {
                             if (data.error === undefined) {
                                 if (data.success) {
-                                    console.log(data);
-                                    this.resetFields();
+                                    this.plantInfo = data.data;
+                                    this.displayModal = true;
                                 } else {
                                     this.$emit('displayMessage', 'error', data.message);
                                 }
@@ -137,13 +197,23 @@
 
                             this.loading = false;
                         });
+                } else {
+                    this.$emit('displayMessage', 'error',
+                        'We are sorry this a problem on over end. We\'ll resolve it shortly');
                 }
+            },
+            getPlantInfo(name) {
+                this.getSpecificPlant(name);
+            },
+            closeModal() {
+                this.displayModal = false;
+                this.plantInfo = {};
             },
             resetFields() {
                 this.plantName = '';
                 this.imageBase64 = '';
                 this.imageFile = null;
-                this.fileName = 'Filename will be displayed here...';
+                this.fileName = '';
             }
         }
     }
